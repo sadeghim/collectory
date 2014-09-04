@@ -6,9 +6,10 @@
     <title><cl:pageTitle>${fieldValue(bean: instance, field: "name")}</cl:pageTitle></title>
     <link rel="stylesheet" type="text/css" href="${resource(dir: 'css/smoothness', file: 'jquery-ui-1.8.16.custom.css')}"/>
     <script type="text/javascript" language="javascript" src="http://www.google.com/jsapi"></script>
-    <r:require modules="fancybox, jquery_jsonp, jstree, jquery_ui_custom, charts, datadumper"/>
-    <script type="text/javascript">
+    <r:script type="text/javascript">
         // define biocache server
+        biocacheServicesUrl = "${grailsApplication.config.biocacheServicesUrl}";
+        biocacheWebappUrl = "${grailsApplication.config.biocacheUiURL}";
         bieUrl = "${grailsApplication.config.bie.baseURL}";
         $(document).ready(function () {
             <g:if test="${instance.guid}">
@@ -28,7 +29,8 @@
                 'width': 300
             });
         });
-    </script>
+    </r:script>
+    <r:require modules="fancybox, jquery_jsonp, jstree, jquery_ui_custom, charts, datadumper"/>
 </head>
 <body class="nav-datasets">
 <div id="content">
@@ -289,10 +291,6 @@
 </div>
 </div>
 <r:script type="text/javascript">
-
-      biocacheServicesUrl = "${grailsApplication.config.biocacheServicesUrl}";
-      biocacheWebappUrl = "${grailsApplication.config.biocacheUiURL}";
-
       // configure the charts
       var facetChartOptions = {
           /* base url of the collectory */

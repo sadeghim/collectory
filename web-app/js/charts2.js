@@ -18,9 +18,9 @@
  *------------------------------------------------------------------------------------------*/
 // define a base object with the major defaults that we can inherit from (prototypically)
 var baseFacetChart = {
-    collectionsUrl: "http://collections.ala.org.au",
-    biocacheServicesUrl: "http://biocache.ala.org.au/ws",
-    biocacheWebappUrl: "http://biocache.ala.org.au",
+    collectionsUrl: "http://no-default-collectory",
+    biocacheServicesUrl: "http://no-default-biocache/ws",
+    biocacheWebappUrl: "http://no-default-biocache",
     chartsDiv: null,  // the container for the chart
     chart: null,    // the google chart object
     width: 480,

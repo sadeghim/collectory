@@ -4,6 +4,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="layout" content="${grailsApplication.config.ala.skin}" />
         <title><cl:pageTitle>${fieldValue(bean: instance, field: "name")}</cl:pageTitle></title>
+        <script type="text/javascript" language="javascript" src="http://www.google.com/jsapi"></script>
+        <r:require modules="fancybox, jquery_jsonp, charts"/>
         <r:script type="text/javascript">
           biocacheServicesUrl = "${grailsApplication.config.biocacheServicesUrl}";
           biocacheWebappUrl = "${grailsApplication.config.biocacheUiURL}";
@@ -25,8 +27,6 @@
             $('#overviewTabs a:first').tab('show');
           });
         </r:script>
-        <script type="text/javascript" language="javascript" src="http://www.google.com/jsapi"></script>
-        <r:require modules="fancybox, jquery_jsonp, charts"/>
     </head>
     <body class="two-column-right">
       <div id="content">
@@ -276,10 +276,12 @@
                     </g:else>
                     <g:if test="${biocacheRecordsAvailable}">
                         <div style="clear:both;"></div>
-                          <div id="collectionRecordsMapContainer">
-                              <h3><g:message code="public.show.crmc.title" /></h3>
-                              <cl:recordsMapDirect uid="${instance.uid}"/>
-                          </div>
+                          <g:if test="${!grailsApplication.config.disableOverviewMap.toBoolean()}">
+                              <div id="collectionRecordsMapContainer">
+                                  <h3><g:message code="public.show.crmc.title" /> ${grailsApplication.config.disableOverviewMap.toBoolean()}</h3>
+                                  <cl:recordsMapDirect uid="${instance.uid}"/>
+                              </div>
+                          </g:if>
                           <div id="charts"></div>
                           <div id="iehack"></div>
                     </g:if>
