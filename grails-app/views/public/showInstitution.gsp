@@ -6,7 +6,7 @@
     <title><cl:pageTitle>${fieldValue(bean: instance, field: "name")}</cl:pageTitle></title>
     <script type="text/javascript" language="javascript" src="http://www.google.com/jsapi"></script>
     <r:require modules="fancybox, jquery_jsonp, charts"/>
-    <script type="text/javascript">
+    <r:script type="text/javascript">
       biocacheServicesUrl = "${grailsApplication.config.biocacheServicesUrl}";
       biocacheWebappUrl = "${grailsApplication.config.biocacheUiURL}";
         $(document).ready(function () {
@@ -25,7 +25,7 @@
                 'width': 300
             });
         });
-    </script>
+    </r:script>
 </head>
 
 <body>
@@ -56,10 +56,7 @@
                         <div id="lsidText" style="text-align: left;">
                             <b><a class="external_icon" href="http://lsids.sourceforge.net/"
                                   target="_blank"><g:message code="public.lsidtext.link" />:</a></b>
-
-                            <p><cl:guid target="_blank"
-                                                                guid='${fieldValue(bean: instance, field: "guid")}'/></p>
-
+                            <p><cl:guid target="_blank" guid='${fieldValue(bean: instance, field: "guid")}'/></p>
                             <p><g:message code="public.lsidtext.des" />.</p>
                         </div>
                     </div>

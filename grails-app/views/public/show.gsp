@@ -4,7 +4,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="layout" content="${grailsApplication.config.ala.skin}" />
         <title><cl:pageTitle>${fieldValue(bean: instance, field: "name")}</cl:pageTitle></title>
-        <script type="text/javascript">
+        <r:script type="text/javascript">
           biocacheServicesUrl = "${grailsApplication.config.biocacheServicesUrl}";
           biocacheWebappUrl = "${grailsApplication.config.biocacheUiURL}";
           $(document).ready(function() {
@@ -24,7 +24,7 @@
             });
             $('#overviewTabs a:first').tab('show');
           });
-        </script>
+        </r:script>
         <script type="text/javascript" language="javascript" src="http://www.google.com/jsapi"></script>
         <r:require modules="fancybox, jquery_jsonp, charts"/>
     </head>
@@ -316,7 +316,7 @@
             </div>
         </div>
       </div>
-      <script type="text/javascript">
+      <r:script type="text/javascript">
       // configure the charts
       var facetChartOptions = {
           backgroundColor: "#fffef7",
@@ -631,7 +631,7 @@ function setProgress(percentage){
       // setup ul.tabs to work as tabs for each div directly under div.panes
       $("ul#nav-tabs").tabs("div.panes > div", {history: true, effect: 'fade', fadeOutSpeed: 200});
     });
-    </script>
+    </r:script>
     <r:require module="jquery_tools"/>
     </body>
 </html>
