@@ -168,17 +168,6 @@ class UrlMappings {
 
       "/ws/$entity?(.$format)?" (controller:'data', action:[GET:'getEntity', POST: 'saveEntity',  PUT:'saveEntity', DELETE: 'delete'])
 
-//      "/ws/institution/contacts/$uid(.$format)?" (controller:'data')
-//      "/ws/dataProvider/contacts/$uid(.$format)?" (controller:'data',action:'contactsForDataProviders')
-//      "/ws/dataResource/contacts/$uid(.$format)?" (controller:'data',action:'contactsForDataResources')
-//      "/ws/dataHub/contacts/$uid(.$format)?" (controller:'data',action:'contactsForDataHubs')
-
-//      "/ws/tempDataResource" (controller: 'tempDataResource') {
-//          action = [GET:'getEntity', PUT:'saveEntity', DELETE:'delete', POST:'saveEntity']
-//      }
-
-
-
       "/public/resources(.$format)"(controller:'public', action:'resources')
 
       "/"(controller:'public', action:'map')

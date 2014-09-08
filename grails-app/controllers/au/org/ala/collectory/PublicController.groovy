@@ -522,7 +522,13 @@ class PublicController {
         forward(action: 'dataSets')
     }
 
-    def dataSets = {
+    def dataSets = {}
+
+    def dataSetSearch = {
+        def drs = DataResource.findAllByNameLikeAndStatusNotEqual('%' + params.q + '%', 'declined').collect {
+           it.uid
+        }
+        render drs as JSON
     }
 
     def resources = {

@@ -214,10 +214,9 @@ function filterList() {
             query += (i == 0) ? term : "&fq=text:" + term
         });
         // do search
-        $.ajax({url:"http://bie.ala.org.au/search.json?q=" + query + "&fq=idxtype:DATASET&pageSize=1000&sort=name",
-            dataType:'jsonp',
-            success: function(data) {
-                var uids = extractListOfUidsFromSearchResults(data);
+        console.log('Doing a search with query: ' + query);
+        $.ajax({url: baseUrl + "/public/dataSetSearch?q=" + query,
+            success: function(uids) {
                 applyFilters(uids);
                 $('.collectory-content').css('cursor','default');
             }
@@ -239,6 +238,7 @@ function applyFilters(uidList) {
     showFilters();
     displayPage();
 }
+
 /** applies a single filter to the list **/
 function filterBy(filter, uidList) {
     var newResourcesList = [];
@@ -287,7 +287,7 @@ function addFilter(facet, value, element) {
     // hide tooltip
     hideTooltip(element);
 
-    if (findInCurrentFilters(facet,value) >= 0) {
+    if (findInCurrentFilters(facet, value) >= 0) {
         // duplicate of existing filter so do nothing
         return;
     }
@@ -298,7 +298,7 @@ function addFilter(facet, value, element) {
 }
 /** removes a filter and re-filters list**/
 function removeFilter(facet, value, element) {
-    var idx = findInCurrentFilters(facet,value);
+    var idx = findInCurrentFilters(facet, value);
     if (idx > -1) {
         currentFilters.splice(idx, 1);
     }
