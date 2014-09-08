@@ -1,4 +1,4 @@
-# collectory 
+# collectory   [![Build Status](https://travis-ci.org/AtlasOfLivingAustralia/collectory.svg?branch=master)](http://travis-ci.org/AtlasOfLivingAustralia/collectory) 
 
 The collectory manages metadata that describe Australia's biodiversity collections and suppliers of biodiversity data.
 
