@@ -2,6 +2,8 @@
 
 The collectory manages metadata that describe Australia's biodiversity collections and suppliers of biodiversity data.
 
+ * [Database schema (PDF)](Collectory_schema_20140916.pdf)
+
 ## Release notes - version 1.1
 
  * Translate all messages into Chinese in i18n for gsp files under the folder public
