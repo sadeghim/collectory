@@ -384,7 +384,7 @@ function onLoadCallback() {
 //      $('div.learnMaps').css('display','none');
 //  }
 
-  loadDownloadStats("${instance.uid}","${instance.name}", "1002");
+  loadDownloadStats("${grailsApplication.config.loggerURL}", "${instance.uid}","${instance.name}", "1002");
 
   // records
   $.ajax({

@@ -195,7 +195,7 @@
      \************************************************************/
     function onLoadCallback() {
         // stats
-        loadDownloadStats("${instance.uid}", "${instance.name}", "1002");
+        loadDownloadStats("${grailsApplication.config.loggerURL}", "${instance.uid}", "${instance.name}", "1002");
     }
 
     /************************************************************\

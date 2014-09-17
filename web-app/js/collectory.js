@@ -211,12 +211,15 @@ function contactCurator(email, firstName, uid, instUid, name) {
 /************************************************************\
  *******        LOAD DOWNLOAD STATS        *****
 \************************************************************/
-function loadDownloadStats(uid, name, eventType) {
+function loadDownloadStats(loggerServicesUrl, uid, name, eventType) {
     if (eventType == '') {
         // nothing to show
         return;
     }
-    var loggerServicesUrl = "http://logger.ala.org.au/service/";
+    if (loggerServicesUrl == ''){
+        return;
+    }
+
     var url = loggerServicesUrl + uid + "/events/" + eventType + "/counts.json";
     $.ajax({
       url: url,

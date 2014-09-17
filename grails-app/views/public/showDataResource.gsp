@@ -358,9 +358,9 @@
     function onLoadCallback() {
       // stats
       if (${instance.resourceType == 'website'}) {
-          loadDownloadStats("${instance.uid}","${instance.name}", "2000");
+          loadDownloadStats("${grailsApplication.config.loggerURL}", "${instance.uid}","${instance.name}", "2000");
       } else if (${instance.resourceType == 'records'}) {
-          loadDownloadStats("${instance.uid}","${instance.name}", "1002");
+          loadDownloadStats("${grailsApplication.config.loggerURL}", "${instance.uid}","${instance.name}", "1002");
       }
 
       // species pages
