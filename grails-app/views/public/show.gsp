@@ -9,6 +9,7 @@
         <r:script type="text/javascript">
           biocacheServicesUrl = "${grailsApplication.config.biocacheServicesUrl}";
           biocacheWebappUrl = "${grailsApplication.config.biocacheUiURL}";
+          loadLoggerStats = ${!grailsApplication.config.disableLoggerLinks.toBoolean()};
           $(document).ready(function() {
             $("a#lsid").fancybox({
                     'hideOnContentClick' : false,
@@ -66,7 +67,7 @@
                 <g:link action="showInstitution" id="${inst.id}">
                   <img class="institutionImage" src='${resource(absolute:"true", dir:"data/institution/",file:fieldValue(bean: inst, field: 'logoRef.file'))}' />
                 </g:link>
-                  <!--div style="clear: both;"></div-->
+                <!--div style="clear: both;"></div-->
               </g:if>
             </div>
           </div>
@@ -99,7 +100,7 @@
                   </g:if>
                   <g:if test="${fieldValue(bean: instance, field: 'scientificNames')}">
                     <p><cl:collectionName name="${instance.name}" prefix="The "/> <g:message code="public.show.oc.des02" />:<br/>
-                    <cl:JSONListAsStrings json='${fieldValue(bean: instance, field: "scientificNames")}'/>.</p>
+                    <cl:JSONListAsStrings json='${instance.scientificNames}'/>.</p>
                   </g:if>
 
                   <g:if test="${instance?.geographicDescription || instance.states}">
@@ -141,12 +142,10 @@
                     <cl:subCollectionList list="${instance.subCollections}"/>
                   </g:if>
 
-                  <g:if test="${biocacheRecordsAvailable}">
+                  <g:if test="${biocacheRecordsAvailable && !grailsApplication.config.disableLoggerLinks.toBoolean()}">
                   <div id='usage-stats' style="">
                     <h2><g:message code="public.show.oc.label07" /></h2>
-                    <div id='usage'>
-                      <p><g:message code="public.usage.des" />...</p>
-                    </div>
+                    <div id='usage'></div>
                   </div>
                   </g:if>
 
@@ -310,18 +309,16 @@
                    }
                    #imagesList .imgCon img { max-height:150px; }
                </style>
-               <h2><g:message code="public.show.it.title" /></h2>
-               <div id="imagesSpiel">
-               </div>
-               <div id="imagesList">
-               </div>
+               <h2><g:message code="public.show.it.title"/></h2>
+               <div id="imagesSpiel"></div>
+               <div id="imagesList"></div>
             </div>
         </div>
       </div>
       <r:script type="text/javascript">
       // configure the charts
       var facetChartOptions = {
-          backgroundColor: "#fffef7",
+          backgroundColor: "${grailsApplication.config.chartsBgColour}",
           /* base url of the collectory */
           collectionsUrl: "${grailsApplication.config.grails.serverURL}",
           /* base url of the biocache ws*/
@@ -337,7 +334,7 @@
           /* override default options for individual charts */
       }
       var taxonomyChartOptions = {
-          backgroundColor: "#fffef7",
+          backgroundColor: "${grailsApplication.config.chartsBgColour}",
           /* base url of the collectory */
           collectionsUrl: "${grailsApplication.config.grails.serverURL}",
           /* base url of the biocache */
@@ -375,16 +372,10 @@ $('img#mapLegend').each(function(i, n) {
 * initiate ajax calls
 \************************************************************/
 function onLoadCallback() {
-  // stats
-  // hack for ie6 & ie7
-//  if (jQuery.browser.msie && (parseInt(jQuery.browser.version,10) === 6 || parseInt(jQuery.browser.version,10) === 7)) {
-//      var $stats = $('#usage-stats');
-//      $stats.detach().appendTo($('#iehack'));
-//      $stats.css('padding-top','40px').css('margin-left','50px');
-//      $('div.learnMaps').css('display','none');
-//  }
 
-  loadDownloadStats("${grailsApplication.config.loggerURL}", "${instance.uid}","${instance.name}", "1002");
+  if(loadLoggerStats){
+    loadDownloadStats("${grailsApplication.config.loggerURL}", "${instance.uid}","${instance.name}", "1002");
+  }
 
   // records
   $.ajax({
@@ -440,7 +431,6 @@ function onLoadCallback() {
         } else {
             if(data.totalRecords > 0){
                 $('#imagesTabEl').css({display:'block'});
-                //$('#imagesTab').css({display:'block'});
                 var description = ""
                 if(data.facetResults.length>0 && data.facetResults[0].fieldResult !== undefined){
                     description = "Of these images there: ";
@@ -452,7 +442,7 @@ function onLoadCallback() {
                         description += '<a href="' + queryUrl + '">' + (facet.count + ' ' + facet.label) + '</a>';
                     })
                 }
-                $('#imagesSpiel').html('<p><a href="'+biocacheWebappUrl + uiBase + imagesQueryUrl +'">' + data.totalRecords + ' images</a> have been made available from the ${instance.name}. <br/> ' + description + '.</p>');
+                $('#imagesSpiel').html('<p><a href="'+biocacheWebappUrl + uiBase + imagesQueryUrl +'">' + data.totalRecords + ' images</a> have been made available from the ${instance.name}. <br/> ' + description + '</p>');
                 $.each(data.occurrences, function(idx, item){
                     var imageText = item.scientificName;
                     if(item.typeStatus !== undefined){
@@ -579,7 +569,7 @@ function drawTaxonChart2(dataTable) {
       if (rank != "species") {
         // NOTE *** margin-bottom value must match the value in the source html
         $('div#taxonChart').html('<img style="margin-left:230px;margin-top:150px;margin-bottom:218px;" alt="loading..." src="${resource(dir:'images/ala',file:'ajax-loader.gif')}"/>');
-        var drillUrl = "${ConfigurationHolder.config.grails.context}/public/rankBreakdown/${instance.uid}?name=" +
+        var drillUrl = "${grailsApplication.config.grails.context}/public/rankBreakdown/${instance.uid}?name=" +
                 dataTable.getValue(chart.getSelection()[0].row,0) +
                "&rank=" + dataTable.getTableProperty('rank')
         $.get(drillUrl, {}, taxonBreakdownRequestHandler);

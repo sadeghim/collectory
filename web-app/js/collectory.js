@@ -219,8 +219,8 @@ function loadDownloadStats(loggerServicesUrl, uid, name, eventType) {
     if (loggerServicesUrl == ''){
         return;
     }
-
-    var url = loggerServicesUrl + uid + "/events/" + eventType + "/counts.json";
+    $('div#usage').html("Loading statistics...");
+    var url = loggerServicesUrl + "/" + uid + "/events/" + eventType + "/counts.json";
     $.ajax({
       url: url,
       dataType: 'jsonp',
@@ -264,7 +264,7 @@ function loadDownloadStats(loggerServicesUrl, uid, name, eventType) {
 
     // If getting stats for record downloads, include breakdown by reason over the last 12 months
     if (eventType == '1002') {
-        var url2 = loggerServicesUrl + "reasonBreakdown.json?eventId=1002&entityUid=" + uid
+        var url2 = loggerServicesUrl + "/reasonBreakdown.json?eventId=1002&entityUid=" + uid
         $.ajax({
             url: url2,
             dataType: 'jsonp',

@@ -25,7 +25,6 @@
 
         <div id="column-two">
           <div class="section sidebar">
-
               <!-- contacts -->
               <g:set var="contacts" value="${instance.getPublicContactsPrimaryFirst()}"/>
               <g:render template="contacts" bean="${contacts}"/>
@@ -34,7 +33,6 @@
               <p>${fieldValue(bean: instance, field: "firstName")} ${fieldValue(bean: instance, field: "lastName")}</p>
               <g:if test="${instance.email}"><cl:emailLink>${fieldValue(bean: instance, field: "email")}</cl:emailLink><br/></g:if>
             </div>
-
           </div>
         </div>
       </div>

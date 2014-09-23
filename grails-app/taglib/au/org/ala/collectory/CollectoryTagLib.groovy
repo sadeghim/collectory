@@ -52,7 +52,7 @@ class CollectoryTagLib {
 
     def createAlertsLink(attrs, urlPath) {
 
-       if(!grailsApplication.config.disableAlertLinks){
+       if(!grailsApplication.config.disableAlertLinks.toBoolean()){
            def link = grailsApplication.config.alertUrl + urlPath
            link += '?webserviceQuery=/occurrences/search?q=' + attrs.query
            link += '&uiQuery=/occurrences/search?q=' + attrs.query
@@ -571,7 +571,8 @@ class CollectoryTagLib {
             case 1: str = list[0]; break;
             default:
                 if (attrs.pureList == 'true') {
-                    str = list[0..-1].join(', ')  // bizarrely this gives a different output to list.join(', ')
+                    str = list[0..-1].sort().join(', ')  // bizarrely this gives a different output to list.join(', ')
+                    //str = list.join(', ')
                 }
                 else {
                     str = list[0..-2].join(', ') + " and " + list.last()
@@ -1431,7 +1432,7 @@ class CollectoryTagLib {
      */
     def lastUpdated = {attrs ->
         if (attrs.date) {
-            out << "<p class='lastUpdated'>last updated: ${attrs.date}</p>"
+            out << "<p class='lastUpdated'>" + g.message(code: "metadata.last.updated", args: []) + " ${attrs.date}</p>"
         }
     }
 
