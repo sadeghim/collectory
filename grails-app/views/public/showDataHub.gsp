@@ -167,6 +167,7 @@
 $.ajaxSetup({cache: true});
 // configure the charts
 var facetChartOptions = {
+    backgroundColor: "${grailsApplication.config.chartsBgColour}",
     /* base url of the collectory */
     collectionsUrl: "${grailsApplication.config.grails.serverURL}",
     /* base url of the biocache ws*/
@@ -190,6 +191,7 @@ var facetChartOptions = {
     assertions: {width:500, height: 400}
 }
 var taxonomyChartOptions = {
+    backgroundColor: "${grailsApplication.config.chartsBgColour}",
     /* base url of the collectory */
     collectionsUrl: "${grailsApplication.config.grails.serverURL}",
     /* base url of the biocache ws*/

@@ -235,7 +235,7 @@ function loadDownloadStats(loggerServicesUrl, uid, name, eventType) {
             var stats;
             if (eventType == '2000') { // images
                 stats = "<p class='short-bot'>Number of images viewed from the " + name + " through the Atlas of Living Australia.</p>";
-                stats += "<table class='table counts'>";
+                stats += "<table class='table counts table-striped'>";
                 stats += "<tr><td class='span4'>This month</td><td class='span4'><span class='number'>" +
                         addCommas(data.thisMonth.numberOfEventItems) + "</span></td></tr>";
                 stats += "<tr><td class='span4'>Last 3 months</td><td class='span4'><span class='number'>" +
@@ -245,7 +245,7 @@ function loadDownloadStats(loggerServicesUrl, uid, name, eventType) {
                 stats += "</table>";
             } else {  // eventType == '1002' - records
                 stats = "<p class='short-bot'>Number of occurrence records downloaded from the " + name + " through the Atlas of Living Australia.</p>";
-                stats += "<table class='table counts'>";
+                stats += "<table class='table counts table-striped'>";
                 stats += "<tr><td class='span4'>This month</td><td class='span4'><span class='number'>" +
                         addCommas(data.thisMonth.numberOfEventItems) + "</span> from <span class='number'>" +
                         addCommas(data.thisMonth.numberOfEvents) + "</span> " + pluralise('download',data.thisMonth.numberOfEvents) + "</td></tr>";
@@ -278,7 +278,7 @@ function loadDownloadStats(loggerServicesUrl, uid, name, eventType) {
                 } else {
                     var stats;
                     stats = "<p class='short-bot'>Breakdown by reason of occurrence record downloads from last 12 months:</p>";
-                    stats += "<table class='table usageByReasonBreakdown'>";
+                    stats += "<table class='table usageByReasonBreakdown table-striped'>";
 
                     stats += "<tr><td>Conservation management/planning</td><td style='text-align: right;'><span class='number'>" +
                         addCommas(data.lastYear.reasonBreakdown["conservation management/planning"].records) + "</span></td><td> from <span class='number'>" +

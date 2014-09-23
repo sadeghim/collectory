@@ -10,6 +10,7 @@
         // define biocache server
         biocacheServicesUrl = "${grailsApplication.config.biocacheServicesUrl}";
         biocacheWebappUrl = "${grailsApplication.config.biocacheUiURL}";
+        loadLoggerStats = ${!grailsApplication.config.disableLoggerLinks.toBoolean()};
         $(document).ready(function () {
             $("a#lsid").fancybox({
                 'hideOnContentClick': false,
@@ -195,7 +196,9 @@
      \************************************************************/
     function onLoadCallback() {
         // stats
-        loadDownloadStats("${grailsApplication.config.loggerURL}", "${instance.uid}", "${instance.name}", "1002");
+        if(loadLoggerStats) {
+            loadDownloadStats("${grailsApplication.config.loggerURL}", "${instance.uid}", "${instance.name}", "1002");
+        }
     }
 
     /************************************************************\

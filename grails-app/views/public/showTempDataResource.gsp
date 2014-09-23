@@ -22,13 +22,11 @@
             <cl:lastUpdated date="${instance.lastUpdated}"/>
           </div>
         </div><!--close column-one-->
-
         <div id="column-two">
           <div class="section sidebar">
               <!-- contacts -->
               <g:set var="contacts" value="${instance.getPublicContactsPrimaryFirst()}"/>
               <g:render template="contacts" bean="${contacts}"/>
-
               <div class="section">
               <p>${fieldValue(bean: instance, field: "firstName")} ${fieldValue(bean: instance, field: "lastName")}</p>
               <g:if test="${instance.email}"><cl:emailLink>${fieldValue(bean: instance, field: "email")}</cl:emailLink><br/></g:if>
@@ -36,6 +34,5 @@
           </div>
         </div>
       </div>
-
     </body>
 </html>

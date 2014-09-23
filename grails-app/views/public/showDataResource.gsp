@@ -11,6 +11,7 @@
         biocacheServicesUrl = "${grailsApplication.config.biocacheServicesUrl}";
         biocacheWebappUrl = "${grailsApplication.config.biocacheUiURL}";
         bieUrl = "${grailsApplication.config.bie.baseURL}";
+        loadLoggerStats = ${!grailsApplication.config.disableLoggerLinks.toBoolean()};
         $(document).ready(function () {
             <g:if test="${instance.guid}">
             $("a#lsid").fancybox({
@@ -293,6 +294,7 @@
 <r:script type="text/javascript">
       // configure the charts
       var facetChartOptions = {
+          backgroundColor: "${grailsApplication.config.chartsBgColour}",
           /* base url of the collectory */
           collectionsUrl: "${grailsApplication.config.grails.serverURL}",
           /* base url of the biocache ws*/
@@ -306,6 +308,7 @@
               'biogeographic_region','state_conservation','occurrence_year']
       }
       var taxonomyChartOptions = {
+          backgroundColor: "${grailsApplication.config.chartsBgColour}",
           /* base url of the collectory */
           collectionsUrl: "${grailsApplication.config.grails.serverURL}",
           /* base url of the biocache ws*/
@@ -357,10 +360,12 @@
     \************************************************************/
     function onLoadCallback() {
       // stats
-      if (${instance.resourceType == 'website'}) {
-          loadDownloadStats("${grailsApplication.config.loggerURL}", "${instance.uid}","${instance.name}", "2000");
-      } else if (${instance.resourceType == 'records'}) {
-          loadDownloadStats("${grailsApplication.config.loggerURL}", "${instance.uid}","${instance.name}", "1002");
+      if(loadLoggerStats){
+          if (${instance.resourceType == 'website'}) {
+              loadDownloadStats("${grailsApplication.config.loggerURL}", "${instance.uid}","${instance.name}", "2000");
+          } else if (${instance.resourceType == 'records'}) {
+              loadDownloadStats("${grailsApplication.config.loggerURL}", "${instance.uid}","${instance.name}", "1002");
+          }
       }
 
       // species pages

@@ -9,22 +9,23 @@
     <r:script type="text/javascript">
       biocacheServicesUrl = "${grailsApplication.config.biocacheServicesUrl}";
       biocacheWebappUrl = "${grailsApplication.config.biocacheUiURL}";
-        $(document).ready(function () {
-            $("a#lsid").fancybox({
-                'hideOnContentClick': false,
-                'titleShow': false,
-                'autoDimensions': false,
-                'width': 600,
-                'height': 180
-            });
-            $("a.current").fancybox({
-                'hideOnContentClick': false,
-                'titleShow': false,
-                'titlePosition': 'inside',
-                'autoDimensions': true,
-                'width': 300
-            });
+      loadLoggerStats = ${!grailsApplication.config.disableLoggerLinks.toBoolean()};
+      $(document).ready(function () {
+        $("a#lsid").fancybox({
+            'hideOnContentClick': false,
+            'titleShow': false,
+            'autoDimensions': false,
+            'width': 600,
+            'height': 180
         });
+        $("a.current").fancybox({
+            'hideOnContentClick': false,
+            'titleShow': false,
+            'titlePosition': 'inside',
+            'autoDimensions': true,
+            'width': 300
+        });
+      });
     </r:script>
 </head>
 
@@ -234,7 +235,9 @@
     function onLoadCallback() {
 
       // stats
-      loadDownloadStats("${grailsApplication.config.loggerURL}", "${instance.uid}","${instance.name}", "1002");
+      if(loadLoggerStats){
+        loadDownloadStats("${grailsApplication.config.loggerURL}", "${instance.uid}","${instance.name}", "1002");
+      }
 
       // records
       $.ajax({
