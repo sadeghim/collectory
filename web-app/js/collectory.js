@@ -19,10 +19,16 @@ function noData() {
     $('#recordsBreakdown').css('display','none');
 }
 /************************************************************\
+ * Capitalise the first letter of a string
+ \************************************************************/
+function capitaliseFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+/************************************************************\
 * Add commas to number strings
 \************************************************************/
-function addCommas(nStr)
-{
+function addCommas(nStr){
     nStr += '';
     x = nStr.split('.');
     x1 = x[0];
@@ -33,24 +39,6 @@ function addCommas(nStr)
     }
     return x1 + x2;
 }
-/*----------------------------- RECORDS MAP ------------------------------------*/
-/************************************************************\
-* Draw the map and legend
-\************************************************************/
-function mapRequestHandler(response) {
-  if (response.error != undefined) {
-    // set map url
-    $('#recordsMap').attr("src","${resource(dir:'images/map',file:'mapaus1_white-340.png')}");
-    // set legend url
-    $('#mapLegend').attr("src","${resource(dir:'images/map',file:'mapping-data-not-available.png')}");
-  } else {
-    // set map url
-    $('#recordsMap').attr("src",response.mapUrl);
-    // set legend url
-    $('#mapLegend').attr("src",response.legendUrl);
-  }
-}
-/*--(end)---------------------- records map ------------------------------------*/
 /************************************************************\
 *
 \************************************************************/
@@ -110,39 +98,6 @@ function sendEmail(strEncoded) {
     return false;
 }
 
-/************************************************************\
-*
-\************************************************************/
-function getController(uid) {
-    if (!uid || uid.length < 2) {
-        return "unknown"
-    }
-    switch (uid.substr(0,2)) {
-        case "in": return "institution";
-        case "co": return "collection";
-        case "dr": return "dataResource";
-        case "drt": return "dataResourceTemporary";
-        case "dp": return "dataProvider";
-        default: return "unknown"
-    }
-}
-
-/************************************************************\
-*
-\************************************************************/
-// opens email window and adds error info
-function sendBugEmail(strEncoded, message) {
-    var strAddress;
-    strAddress = strEncoded.split(strEncodedAtSign);
-    strAddress = strAddress.join("@");
-    var body = document.title + ' \n(' + window.location.href + ')\n' + message;
-    var objWin = window.open ('mailto:' + strAddress + '?subject=' + document.title + '&body=' + body,'_blank');
-    if (objWin) objWin.close();
-    if (event) {
-        event.cancelBubble = true;
-    }
-    return false;
-}
 
 /************************************************************\
 *
@@ -196,7 +151,6 @@ function contactCurator(email, firstName, uid, instUid, name) {
     content = content + "After consulting the website, please respond to this email with any feedback and edits that you would like made to your Collections and Institution pages before Monday the 25th of October 2010.\n\n";
     content = content + "Regards,\n";
     content = content + "The Atlas of Living Australia\n\n";
-    content = content + "Miles Nicholls\n";
     content = content + "Data Manager| Atlas of Living Australia\n";
     content = content + "CSIRO\n";
 
@@ -216,196 +170,42 @@ function loadDownloadStats(loggerServicesUrl, uid, name, eventType) {
         // nothing to show
         return;
     }
+
     if (loggerServicesUrl == ''){
         return;
     }
+
+    var displayNameMap = {
+        'all' : 'All downloads',
+        'thisMonth' : 'This month',
+        'last3Months' : 'Last 3 months',
+        'lastYear' : 'Last 12 months'
+    };
+
     $('div#usage').html("Loading statistics...");
-    var url = loggerServicesUrl + "/" + uid + "/events/" + eventType + "/counts.json";
+
+    var url = loggerServicesUrl + "/reasonBreakdown.json?eventId=" + eventType + "&entityUid=" + uid;
     $.ajax({
-      url: url,
-      dataType: 'jsonp',
-      cache: false,
-      error: function(jqXHR, textStatus, errorThrown) {
-        clearStats();
-      },
-      success: function(data) {
-        if (data.all.numberOfDownloads == '0') {
-            clearStats();
-        } else {
-            var stats;
-            if (eventType == '2000') { // images
-                stats = "<p class='short-bot'>Number of images viewed from the " + name + " through the Atlas of Living Australia.</p>";
-                stats += "<table class='table counts table-striped'>";
-                stats += "<tr><td class='span4'>This month</td><td class='span4'><span class='number'>" +
-                        addCommas(data.thisMonth.numberOfEventItems) + "</span></td></tr>";
-                stats += "<tr><td class='span4'>Last 3 months</td><td class='span4'><span class='number'>" +
-                        addCommas(data.last3Months.numberOfEventItems) + "</span></td></tr>";
-                stats += "<tr><td class='span4'>Last 12 months</td><td class='span4'><span class='number'>" +
-                        addCommas(data.lastYear.numberOfEventItems) + "</span></td></tr>";
-                stats += "</table>";
-            } else {  // eventType == '1002' - records
-                stats = "<p class='short-bot'>Number of occurrence records downloaded from the " + name + " through the Atlas of Living Australia.</p>";
-                stats += "<table class='table counts table-striped'>";
-                stats += "<tr><td class='span4'>This month</td><td class='span4'><span class='number'>" +
-                        addCommas(data.thisMonth.numberOfEventItems) + "</span> from <span class='number'>" +
-                        addCommas(data.thisMonth.numberOfEvents) + "</span> " + pluralise('download',data.thisMonth.numberOfEvents) + "</td></tr>";
-                stats += "<tr><td class='span4'>Last 3 months</td><td class='span4'><span class='number'>" +
-                        addCommas(data.last3Months.numberOfEventItems) + "</span> from <span class='number'>" +
-                        addCommas(data.last3Months.numberOfEvents) + "</span> " + pluralise('download',data.last3Months.numberOfEvents) + "</td></tr>";
-                stats += "<tr><td class='span4'>Last 12 months</td><td class='span4'><span class='number'>" +
-                        addCommas(data.lastYear.numberOfEventItems) + "</span> from <span class='number'>" +
-                        addCommas(data.lastYear.numberOfEvents) + "</span> " + pluralise('download',data.lastYear.numberOfEvents) + "</td></tr>";
-                stats += "</table>";
-            }
-            $('div#usage').html(stats);
+        url: url,
+        dataType: 'jsonp',
+        cache: false,
+        error: function (jqXHR, textStatus, errorThrown) {
+            $('div#usage').html("No usage statistics available.");
+        },
+        success: function (data) {
+            $('div#usage').html('');
+            $.each(data, function( key, value ) {
+                var $usageDiv = $('<div class="usageDiv well"/>');
+                $usageDiv.html('<h4><span>' + displayNameMap[key] + "</span><span class='pull-right'>" + addCommas(value.records) + " records downloaded from " +  addCommas(value.events) + " downloads. </span></h4>");
+                var $usageTable = $('<table class="table"/>');
+                $.each(data[key]['reasonBreakdown'], function( reason, details ) {
+                    var usageTableRow = $('<tr><td>' + capitalise(reason) + '</td><td>' + addCommas(details.events) + ' events</td><td>'  + addCommas(details.records)  + ' records </td>');
+                    $usageTable.append(usageTableRow);
+                });
+                $usageDiv.append($usageTable);
+                $('div#usage').append($usageDiv);
+            })
         }
-      }
     });
-
-    // If getting stats for record downloads, include breakdown by reason over the last 12 months
-    if (eventType == '1002') {
-        var url2 = loggerServicesUrl + "/reasonBreakdown.json?eventId=1002&entityUid=" + uid
-        $.ajax({
-            url: url2,
-            dataType: 'jsonp',
-            cache: false,
-            error: function(jqXHR, textStatus, errorThrown) {
-                clearStats();
-            },
-            success: function(data) {
-                if (data.lastYear.events == '0') {
-                    clearStats();
-                } else {
-                    var stats;
-                    stats = "<p class='short-bot'>Breakdown by reason of occurrence record downloads from last 12 months:</p>";
-                    stats += "<table class='table usageByReasonBreakdown table-striped'>";
-
-                    stats += "<tr><td>Conservation management/planning</td><td style='text-align: right;'><span class='number'>" +
-                        addCommas(data.lastYear.reasonBreakdown["conservation management/planning"].records) + "</span></td><td> from <span class='number'>" +
-                        addCommas(data.lastYear.reasonBreakdown["conservation management/planning"].events) +
-                        "</span> " + pluralise('download',data.lastYear.reasonBreakdown["conservation management/planning"].events) + "</td></tr>";
-
-                    stats += "<tr><td>Biosecurity management/planning</td><td style='text-align: right;'><span class='number'>" +
-                        addCommas(data.lastYear.reasonBreakdown["biosecurity management, planning"].records) + "</span></td><td> from <span class='number'>" +
-                        addCommas(data.lastYear.reasonBreakdown["biosecurity management, planning"].events) +
-                        "</span> " + pluralise('download',data.lastYear.reasonBreakdown["biosecurity management, planning"].events) + "</td></tr>";
-
-                    stats += "<tr><td>Environmental impact/site assessment</td><td style='text-align: right;'><span class='number'>" +
-                        addCommas(data.lastYear.reasonBreakdown["environmental impact, site assessment"].records) + "</span></td><td> from <span class='number'>" +
-                        addCommas(data.lastYear.reasonBreakdown["environmental impact, site assessment"].events) +
-                        "</span> " + pluralise('download',data.lastYear.reasonBreakdown["environmental impact, site assessment"].events) + "</td></tr>";
-
-                    stats += "<tr><td>Education</td><td style='text-align: right;'><span class='number'>" +
-                        addCommas(data.lastYear.reasonBreakdown["education"].records) + "</span></td><td> from <span class='number'>" +
-                        addCommas(data.lastYear.reasonBreakdown["education"].events) +
-                        "</span> " + pluralise('download',data.lastYear.reasonBreakdown["education"].events) + "</td></tr>";
-
-                    stats += "<tr><td>Scientific research</td><td style='text-align: right;'><span class='number'>" +
-                        addCommas(data.lastYear.reasonBreakdown["scientific research"].records) + "</span></td><td> from <span class='number'>" +
-                        addCommas(data.lastYear.reasonBreakdown["scientific research"].events) +
-                        "</span> " + pluralise('download',data.lastYear.reasonBreakdown["scientific research"].events) + "</td></tr>";
-
-                    stats += "<tr><td>Collection management</td><td style='text-align: right;'><span class='number'>" +
-                        addCommas(data.lastYear.reasonBreakdown["collection management"].records) + "</span></td><td> from <span class='number'>" +
-                        addCommas(data.lastYear.reasonBreakdown["collection management"].events) +
-                        "</span> " + pluralise('download',data.lastYear.reasonBreakdown["collection management"].events) + "</td></tr>";
-
-                    stats += "<tr><td>Ecological research</td><td style='text-align: right;'><span class='number'>" +
-                        addCommas(data.lastYear.reasonBreakdown["ecological research"].records) + "</span></td><td> from <span class='number'>" +
-                        addCommas(data.lastYear.reasonBreakdown["ecological research"].events) +
-                        "</span> " + pluralise('download',data.lastYear.reasonBreakdown["ecological research"].events) + "</td></tr>";
-
-                    stats += "<tr><td>Systematic research</td><td style='text-align: right;'><span class='number'>" +
-                        addCommas(data.lastYear.reasonBreakdown["systematic research"].records) + "</span></td><td> from <span class='number'>" +
-                        addCommas(data.lastYear.reasonBreakdown["systematic research"].events) +
-                        "</span> " + pluralise('download',data.lastYear.reasonBreakdown["systematic research"].events) + "</td></tr>";
-
-                    stats += "<tr><td>Other scientific research</td><td style='text-align: right;'><span class='number'>" +
-                        addCommas(data.lastYear.reasonBreakdown["other scientific research"].records) + "</span></td><td> from <span class='number'>" +
-                        addCommas(data.lastYear.reasonBreakdown["other scientific research"].events) +
-                        "</span> " + pluralise('download',data.lastYear.reasonBreakdown["other scientific research"].events) + "</td></tr>";
-
-                    stats += "<tr><td>Other</td><td style='text-align: right;'><span class='number'>" +
-                        addCommas(data.lastYear.reasonBreakdown["other"].records) + "</span></td><td> from <span class='number'>" +
-                        addCommas(data.lastYear.reasonBreakdown["other"].events) +
-                        "</span> " + pluralise('download',data.lastYear.reasonBreakdown["other"].events) + "</td></tr>";
-
-                    stats += "<tr><td>Testing</td></td><td style='text-align: right;'><span class='number'>" +
-                        addCommas(data.lastYear.reasonBreakdown["testing"].records) + "</span></td><td> from <span class='number'>" +
-                        addCommas(data.lastYear.reasonBreakdown["testing"].events) +
-                        "</span> " + pluralise('download',data.lastYear.reasonBreakdown["testing"].events) + "</td></tr>";
-
-                    /*stats += "<tr><td>No reason specified:</td></td><td style='text-align: right;'><span class='number'>" +
-                        addCommas(data.lastYear.reasonBreakdown["unclassified"].records) + "</span></td><td>from <span class='number'>" +
-                        addCommas(data.lastYear.reasonBreakdown["unclassified"].events) +
-                        "</span> " + pluralise('download',data.lastYear.reasonBreakdown["unclassified"].events) + ".</td></tr>";
-                    */
-
-                    stats += "</table>";
-
-                    // Append content to usage statistics content generated by previous ajax call
-                    $('div#usage').html($('div#usage').html() + stats);
-                }
-            }
-        });
-    }
-}
-function clearStats() {
-    $('#usage-stats').css('display','none');
-}
-function pluralise(word, number) {
-    if (number == 1) {
-        return word;
-    } else {
-        return word + 's';
-    }
-}
-
-/************************************************************\
- *******        CHART DOWNLOAD STATS        *****
-\************************************************************/
-function drawVisualization(data, eventType) {
-    var container = document.getElementById('usage-visualization');
-    if (container != undefined) {
-        var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-        // Create and populate the data table.
-        var dataTable = new google.visualization.DataTable();
-        dataTable.addColumn('string', 'Month');
-        if (eventType == '2000') {
-            dataTable.addColumn('number', 'Images');
-        } else {
-            dataTable.addColumn('number', 'Records');
-        }
-        if (eventType == '1002') {
-            dataTable.addColumn('number', 'Downloads');
-        }
-        dataTable.addRows(12);
-        var idx = 0;
-        for(key in data.lastYearByMonth) {
-            dataTable.setValue(idx, 0, key.substring(0,3));
-            dataTable.setValue(idx, 1, data.lastYearByMonth[key].numberOfEventItems);
-            if (eventType == '1002') {
-                dataTable.setValue(idx, 2, data.lastYearByMonth[key].numberOfEvents);
-            }
-            idx++;
-        }
-        var title, legend;
-        if (eventType == '1002') {
-            title = "Records downloaded through the Atlas for the last 12 months";
-            legend = "right";
-        } else {
-            title = "Images viewed through the Atlas for the last 12 months";
-            legend = "none";
-        }
-        // Create and draw the visualization.
-        new google.visualization.ColumnChart(container).
-                draw(dataTable,
-                {title: title,
-                    width:650, height:200,
-                    legend: legend,
-                    chartArea: {left:'10%',top:'auto',width:"70%",height:'auto'},
-                    hAxis: {title: "Month"}}
-        );
-    }
 }
 
