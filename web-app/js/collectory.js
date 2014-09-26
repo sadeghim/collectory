@@ -26,6 +26,21 @@ function capitaliseFirstLetter(string) {
 }
 
 /************************************************************\
+ * Sort a key-value array
+ \************************************************************/
+function sortKV(items) {
+    var values = [];
+    for (var item in items) {
+        values.push({ key: item, value: items[item] });
+    }
+    values.sort(function (a, b) {
+        return a.key.localeCompare(b.key);
+    });
+
+    return values;
+}
+
+/************************************************************\
 * Add commas to number strings
 \************************************************************/
 function addCommas(nStr){
@@ -176,10 +191,10 @@ function loadDownloadStats(loggerServicesUrl, uid, name, eventType) {
     }
 
     var displayNameMap = {
-        'all' : 'All downloads',
         'thisMonth' : 'This month',
         'last3Months' : 'Last 3 months',
-        'lastYear' : 'Last 12 months'
+        'lastYear' : 'Last 12 months',
+        'all' : 'All downloads'
     };
 
     $('div#usage').html("Loading statistics...");
@@ -194,13 +209,25 @@ function loadDownloadStats(loggerServicesUrl, uid, name, eventType) {
         },
         success: function (data) {
             $('div#usage').html('');
-            $.each(data, function( key, value ) {
+            $.each(displayNameMap, function( nameKey, displayString ) {
+                var value = data[nameKey];
                 var $usageDiv = $('<div class="usageDiv well"/>');
-                $usageDiv.html('<h4><span>' + displayNameMap[key] + "</span><span class='pull-right'>" + addCommas(value.records) + " records downloaded from " +  addCommas(value.events) + " downloads. </span></h4>");
+                var nonTestingRecords  = (value.reasonBreakdown["testing"] == undefined) ? value.records : value.records -  value.reasonBreakdown["testing"].records;
+                var nonTestingEvents   = (value.reasonBreakdown["testing"] == undefined) ? value.events  : value.events  -  value.reasonBreakdown["testing"].events;
+                $usageDiv.html('<h4><span>' + displayString + "</span><span class='pull-right'>" + addCommas(nonTestingRecords) + " records downloaded from " +  addCommas(nonTestingEvents) + " downloads. </span></h4>");
                 var $usageTable = $('<table class="table"/>');
-                $.each(data[key]['reasonBreakdown'], function( reason, details ) {
-                    var usageTableRow = $('<tr><td>' + capitalise(reason) + '</td><td>' + addCommas(details.events) + ' events</td><td>'  + addCommas(details.records)  + ' records </td>');
-                    $usageTable.append(usageTableRow);
+                reasons = sortKV(value['reasonBreakdown']);
+                $.each(reasons, function( index, details ) {
+                    var usageTableRow = '<tr';
+                    if (details.key.indexOf("test") >=0){
+                        usageTableRow += " style=color:#999999;";
+                    }
+                    usageTableRow += '><td>' + capitalise(details.key) ;
+                    if (details.key.indexOf("test") >=0){
+                        usageTableRow += "<br/><span style='font-size: 12px;'> *The testing statistics are not included in the total count of downloads.</span>";
+                    }
+                    usageTableRow += '</td><td style="text-align: right;">' + addCommas(details.value.events) + ' events</td><td style="text-align: right">'  + addCommas(details.value.records)  + ' records </td></tr>';
+                    $usageTable.append($(usageTableRow));
                 });
                 $usageDiv.append($usageTable);
                 $('div#usage').append($usageDiv);
