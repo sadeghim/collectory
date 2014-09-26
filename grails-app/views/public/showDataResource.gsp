@@ -172,8 +172,7 @@
                     <h3><g:message code="public.sdr.content.label10" /></h3>
                     <cl:recordsMapDirect uid="${instance.uid}"/>
                 </g:if>
-                <div id="tree"></div>
-
+                <div id="tree" class="well"></div>
                 <div id="charts"></div>
             </div>
         </g:if>
@@ -294,7 +293,6 @@
 <r:script type="text/javascript">
       // configure the charts
       var facetChartOptions = {
-          backgroundColor: "${grailsApplication.config.chartsBgColour}",
           /* base url of the collectory */
           collectionsUrl: "${grailsApplication.config.grails.serverURL}",
           /* base url of the biocache ws*/
@@ -308,7 +306,6 @@
               'biogeographic_region','state_conservation','occurrence_year']
       }
       var taxonomyChartOptions = {
-          backgroundColor: "${grailsApplication.config.chartsBgColour}",
           /* base url of the collectory */
           collectionsUrl: "${grailsApplication.config.grails.serverURL}",
           /* base url of the biocache ws*/

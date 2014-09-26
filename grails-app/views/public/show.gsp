@@ -5,7 +5,7 @@
         <meta name="layout" content="${grailsApplication.config.ala.skin}" />
         <title><cl:pageTitle>${fieldValue(bean: instance, field: "name")}</cl:pageTitle></title>
         <script type="text/javascript" language="javascript" src="http://www.google.com/jsapi"></script>
-        <r:require modules="fancybox, jquery_jsonp, charts"/>
+        <r:require modules="fancybox, jquery_tools, jquery_jsonp, charts"/>
         <r:script type="text/javascript">
           biocacheServicesUrl = "${grailsApplication.config.biocacheServicesUrl}";
           biocacheWebappUrl = "${grailsApplication.config.biocacheUiURL}";
@@ -318,7 +318,6 @@
       <r:script type="text/javascript">
       // configure the charts
       var facetChartOptions = {
-          backgroundColor: "${grailsApplication.config.chartsBgColour}",
           /* base url of the collectory */
           collectionsUrl: "${grailsApplication.config.grails.serverURL}",
           /* base url of the biocache ws*/
@@ -334,7 +333,6 @@
           /* override default options for individual charts */
       }
       var taxonomyChartOptions = {
-          backgroundColor: "${grailsApplication.config.chartsBgColour}",
           /* base url of the collectory */
           collectionsUrl: "${grailsApplication.config.grails.serverURL}",
           /* base url of the biocache */
@@ -355,7 +353,7 @@
 var queryString = '';
 var decadeUrl = '';
 var initial = -120;
-var imageWidth=240;
+var imageWidth = 240;
 var eachPercent = (imageWidth/2)/100;
 
 $('img#mapLegend').each(function(i, n) {
@@ -532,59 +530,7 @@ function decadeBreakdownRequestHandler(response) {
     draw(data);
   }
 }
-/************************************************************\
-* Taxonomic breakdown chart
-\************************************************************/
-function drawTaxonChart2(dataTable) {
-  var chart = new google.visualization.PieChart(document.getElementById('taxonChart'));
-  var options = {};
 
-  options.width = 400;
-  options.height = 400;
-  options.is3D = false;
-  if (dataTable.getTableProperty('scope') == "all") {
-    options.title = "Number of records by " + dataTable.getTableProperty('rank');
-  } else {
-    options.title = dataTable.getTableProperty('name') + " records by " + dataTable.getTableProperty('rank')
-  }
-  options.titleTextStyle = {color: "#555", fontName: 'Arial', fontSize: 15};
-  options.sliceVisibilityThreshold = 0;
-  options.legend = "left";
-  options.chartArea = {left:10, top:40, width:"90%"};
-  google.visualization.events.addListener(chart, 'select', function() {
-    var name = dataTable.getValue(chart.getSelection()[0].row,0);
-    var rank = dataTable.getTableProperty('rank')
-    // differentiate between clicks on legend versus slices
-    if (chart.getSelection()[0].column == undefined) {
-      // clicked legend - show records
-      var scope = dataTable.getTableProperty('scope');
-      if (scope == "genus" && rank == "species") {
-        name = dataTable.getTableProperty('name') + " " + name;
-      }
-      var linkUrl = "${grailsApplication.config.biocacheServicesUrl}/occurrences/searchForUID?q=${instance.uid}&fq=" +
-        rank + ":" + name;
-      document.location.href = linkUrl;
-    } else {
-      // clicked slice - drill down unless already at species
-      if (rank != "species") {
-        // NOTE *** margin-bottom value must match the value in the source html
-        $('div#taxonChart').html('<img style="margin-left:230px;margin-top:150px;margin-bottom:218px;" alt="loading..." src="${resource(dir:'images/ala',file:'ajax-loader.gif')}"/>');
-        var drillUrl = "${grailsApplication.config.grails.context}/public/rankBreakdown/${instance.uid}?name=" +
-                dataTable.getValue(chart.getSelection()[0].row,0) +
-               "&rank=" + dataTable.getTableProperty('rank')
-        $.get(drillUrl, {}, taxonBreakdownRequestHandler);
-      }
-      if ($('span#resetTaxonChart').html() == "") {
-        $('span#resetTaxonChart').html("reset to " + dataTable.getTableProperty('rank'));
-      }
-    }
-  });
-
-  chart.draw(dataTable, options);
-
-  // show taxon caption
-  $('div#taxonChartCaption').css('visibility', 'visible');
-}
 /************************************************************\
 * Draw % digitised bar (progress bar)
 \************************************************************/
@@ -624,6 +570,5 @@ function setProgress(percentage){
       $("ul#nav-tabs").tabs("div.panes > div", {history: true, effect: 'fade', fadeOutSpeed: 200});
     });
     </r:script>
-    <r:require module="jquery_tools"/>
     </body>
 </html>

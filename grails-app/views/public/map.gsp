@@ -4,17 +4,13 @@
         <!-- this is not the current version - use map3 -->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="layout" content="${grailsApplication.config.ala.skin}" />
-        <!--meta name="viewport" content="initial-scale=1.0, user-scalable=no" /-->
         <title><g:message code="public.map.title01" /> | <g:message code="public.map.title02" /></title>
         <script src="https://maps.google.com/maps/api/js?v=3&sensor=true"></script>
-        <!--ABQIAAAAJdniJYdyzT6MyTJB-El-5RQumuBjAh1ZwCPSMCeiY49-PS8MIhSVhrLc20UWCGPHYqmLuvaS_b_FaQ-->
         <script type="text/javascript" src="${resource(dir:'js', file:'map.js')}"></script>
-        
         <script type="text/javascript">
           $(document).ready(function() {
             $('#nav-tabs > ul').tabs();
             greyInitialValues();
-            <!-- calling initMap() here rather than in onload() causes instability -->
           });
         </script>
     </head>
@@ -22,7 +18,7 @@
     <div id="content">
       <div id="header">
         <!--Breadcrumbs-->
-        <div id="breadcrumb"><a href="${ConfigurationHolder.config.ala.baseURL}"><g:message code="public.map.breadcrumb.home" /></a> <a href="${ConfigurationHolder.config.ala.baseURL}/explore/"><g:message code="public.map.breadcrumb.explore" /></a><span class="current"><g:message code="public.map.breadcrumb.des" /></span></div>
+        <div id="breadcrumb"><a href="${grailsApplication.config.ala.baseURL}"><g:message code="public.map.breadcrumb.home" /></a> <a href="${ConfigurationHolder.config.ala.baseURL}/explore/"><g:message code="public.map.breadcrumb.explore" /></a><span class="current"><g:message code="public.map.breadcrumb.des" /></span></div>
         <div class="section full-width">
           <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>

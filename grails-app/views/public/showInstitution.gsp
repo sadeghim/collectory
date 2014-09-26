@@ -200,7 +200,6 @@
 <r:script type="text/javascript">
       // configure the charts
       var facetChartOptions = {
-          backgroundColor: "${grailsApplication.config.chartsBgColour}",
           /* base url of the collectory */
           collectionsUrl: "${grailsApplication.config.grails.serverURL}",
           /* base url of the biocache ws*/
@@ -215,7 +214,6 @@
               'biogeographic_region','state_conservation','occurrence_year']
       }
       var taxonomyChartOptions = {
-          backgroundColor: "${grailsApplication.config.chartsBgColour}",
           /* base url of the collectory */
           collectionsUrl: "${grailsApplication.config.grails.serverURL}",
           /* base url of the biocache ws*/

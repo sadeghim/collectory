@@ -10,39 +10,41 @@
 
 // defaults for taxa chart
 var taxonomyPieChartOptions = {
-    width: 480,
-    height: 350,
+    width: 700,
+    height: 450,
     chartArea: {left:0, top:30, width:"100%", height: "70%"},
-    is3D: true,
-    titleTextStyle: {color: "#555", fontName: 'Arial', fontSize: 15},
+    is3D: false,
+    titleTextStyle: {color: "#555", fontName: 'Arial', fontSize: 12},
     sliceVisibilityThreshold: 0,
-    legend: "right"
+    legend: {position: 'right', textStyle: {fontSize: 12}},
+    backgroundColor: 'transparent'
 };
 
 // defaults for facet charts
 var genericChartOptions = {
-    width: 480,
-    height: 350,
+    width: 700,
+    height: 450,
     chartArea: {left:0, top:30, width:"100%", height: "70%"},
-    is3D: true,
-    titleTextStyle: {color: "#555", fontName: 'Arial', fontSize: 15},
+    is3D: false,
+    titleTextStyle: {color: "#555", fontName: 'Arial', fontSize: 12},
     sliceVisibilityThreshold: 0,
-    legend: "right",
-    chartType: "pie"
+    legend: {position: 'right', textStyle: {fontSize: 12}},
+    chartType: "pie",
+    backgroundColor: 'transparent'
 };
 
 // defaults for individual facet charts
 var individualChartOptions = {
-    state_conservation: {chartType: 'column', width: 450, chartArea: {left:60, height: "58%"},
+    state_conservation: {chartType: 'column', width: 700, chartArea: {left:60, height: "58%"},
         title: 'By state conservation status', hAxis: {slantedText: true}},
-    occurrence_year: {chartType: 'column', width: 450, chartArea: {left:60, height: "65%"},
+    occurrence_year: {chartType: 'column', width: 700, chartArea: {left:60, height: "65%"},
         hAxis: {slantedText: true}},
     species_group: {title: 'By higher-level group', ignore: ['Animals'], chartType: 'column',
-        width: 450, chartArea: {left:60, height:"58%"}, vAxis: {minValue: 0},
+        width: 700, chartArea: {left:60, height:"58%"}, vAxis: {minValue: 0},
         colors: ['#108628']},
     state: {ignore: ['Unknown1']},
     type_status: {title: 'By type status (as % of all type specimens)', ignore: ['notatype']},
-    assertions: {chartType: 'bar', chartArea: {left:170}}
+    assertions: {chartType: 'bar', width: 900, height:700, chartArea: {left:350, height:"80%", width:"100%"}}
 };
 
 /*----------------- FACET-BASED CHARTS USING DIRECT CALLS TO BIO-CACHE SERVICES ---------------------*/
@@ -303,12 +305,6 @@ function loadTaxonomyChart(chartOptions) {
       dataType: 'jsonp',
       timeout: 30000,
       complete: function(jqXHR, textStatus) {
-//          if (textStatus == 'timeout') {
-//              alert('Sorry - the request was taking too long so it has been cancelled.');
-//          }
-//          if (textStatus == 'error') {
-//              alert('Sorry - the chart cannot be redrawn due to an error.');
-//          }
           if (textStatus != 'success') {
               cleanUp(chartOptions);
           }

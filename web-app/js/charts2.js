@@ -23,8 +23,8 @@ var baseFacetChart = {
     biocacheWebappUrl: "http://no-default-biocache",
     chartsDiv: null,  // the container for the chart
     chart: null,    // the google chart object
-    width: 480,
-    height: 350,
+    width: 600,
+    height: 450,
     chartArea: {left:0, top:30, width:"90%", height: "70%"},
     is3D: true,
     titleTextStyle: {color: "#555", fontName: 'Arial', fontSize: 15},
@@ -33,6 +33,7 @@ var baseFacetChart = {
     chartType: "pie",
     column1DataType: 'string',
     datasets: 1,
+    backgroundColor: {fill:'transparent'},
     // defaults for individual facet charts
     individualChartOptions: {
         state_conservation: {chartArea: {left:60, height: "58%"}, title: 'By state conservation status'},
@@ -254,7 +255,7 @@ var baseFacetChart = {
         }
 
         // show the chart state
-        this.chart.draw(dataTable, this.googleChartOptions());
+        this.chart.draw(dataTable, this.googleChartOptions({backgroundColor: {fill:'transparent'}}));
 
         // kick off post-draw asynch actions (clone the opts as these objects are not as independent as they are meant to be)
         this.transformDataAfter(dataTable, $.extend(true, {}, this.googleChartOptions()));
@@ -544,40 +545,6 @@ var facetChartGroup = {
     }
 };
 
-// create a set of facets charts - requesting the data
-var loadAndDrawFacetCharts = function (options) {
-    // the base url for getting the facet data
-    var url = (options.biocacheServicesUrl == undefined) ? baseFacetChart.biocacheServicesUrl : options.biocacheServicesUrl,
-
-        // build the required facet set
-            facets = options.charts.join('&facets='),
-
-        // calc the target div
-            chartsDiv = $('#' + (options.chartsDiv ? options.chartsDiv : baseFacetChart.chartsDiv));
-
-    // show a message while requesting data
-    chartsDiv.append($("<span>Loading charts...</span>"));
-
-    // make request
-    $.ajax({
-        url: urlConcat(url, "/occurrences/search.json?pageSize=0&q=") + options.query + "&facets=" + facets,
-        dataType: 'jsonp',
-        error: function() {
-            cleanUp(); // TODO:
-        },
-        success: function(data) {
-
-            // clear loading message
-            chartsDiv.find('span').remove();
-
-            // draw all charts
-            drawFacetCharts(data, options);
-
-        }
-    });
-};
-
-//function
 /*------------------------- RECORD BREAKDOWN CHARTS ------------------------------*/
 
 /***** external services & links *****/
@@ -590,25 +557,27 @@ var biocacheWebappUrl = "http://biocache.ala.org.au";  // should be overridden f
 
 // defaults for taxa chart
 var taxonomyPieChartOptions = {
-    width: 480,
-    height: 350,
-    chartArea: {left:0, top:30, width:"100%", height: "70%"},
-    is3D: true,
-    titleTextStyle: {color: "#555", fontName: 'Arial', fontSize: 15},
-    sliceVisibilityThreshold: 0,
-    legend: "right"
-};
-
-// defaults for facet charts
-var genericChartOptions = {
-    width: 480,
-    height: 350,
+    width: 400,
+    height: 450,
     chartArea: {left:0, top:30, width:"100%", height: "70%"},
     is3D: true,
     titleTextStyle: {color: "#555", fontName: 'Arial', fontSize: 15},
     sliceVisibilityThreshold: 0,
     legend: "right",
-    chartType: "pie"
+    backgroundColor: {fill :'transparent'}
+};
+
+// defaults for facet charts
+var genericChartOptions = {
+    width: 400,
+    height: 450,
+    chartArea: {left:0, top:30, width:"100%", height: "70%"},
+    is3D: true,
+    titleTextStyle: {color: "#555", fontName: 'Arial', fontSize: 15},
+    sliceVisibilityThreshold: 0,
+    legend: "right",
+    chartType: "pie",
+    backgroundColor: {fill :'transparent'}
 };
 
 // defaults for individual facet charts
@@ -768,7 +737,7 @@ function buildGenericFacetChart(name, data, query, chartsDiv, chartOptions) {
         case 'bar': chart = new google.visualization.BarChart(document.getElementById(name)); break;
         default: chart = new google.visualization.PieChart(document.getElementById(name)); break;
     }
-
+    opts['backgroundColor'] = 'red';
     chart.draw(dataTable, opts);
 
     // kick off post-draw asynch actions
