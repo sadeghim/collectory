@@ -212,12 +212,22 @@ function loadDownloadStats(loggerServicesUrl, uid, name, eventType) {
             $.each(displayNameMap, function( nameKey, displayString ) {
                 var value = data[nameKey];
                 var $usageDiv = $('<div class="usageDiv well"/>');
-                $usageDiv.html('<h4><span>' + displayString + "</span><span class='pull-right'>" + addCommas(value.records) + " records downloaded from " +  addCommas(value.events) + " downloads. </span></h4>");
+                var nonTestingRecords  = (value.reasonBreakdown["testing"] == undefined) ? value.records : value.records -  value.reasonBreakdown["testing"].records;
+                var nonTestingEvents   = (value.reasonBreakdown["testing"] == undefined) ? value.events  : value.events  -  value.reasonBreakdown["testing"].events;
+                $usageDiv.html('<h4><span>' + displayString + "</span><span class='pull-right'>" + addCommas(nonTestingRecords) + " records downloaded from " +  addCommas(nonTestingEvents) + " downloads. </span></h4>");
                 var $usageTable = $('<table class="table"/>');
                 reasons = sortKV(value['reasonBreakdown']);
                 $.each(reasons, function( index, details ) {
-                    var usageTableRow = $('<tr'+((details.key.indexOf("test") >=0)?" style=color:#999999;":"")+'><td>' + capitalise(details.key) + '</td><td>' + addCommas(details.value.events) + ' events</td><td>'  + addCommas(details.value.records)  + ' records </td>');
-                    $usageTable.append(usageTableRow);
+                    var usageTableRow = '<tr';
+                    if (details.key.indexOf("test") >=0){
+                        usageTableRow += " style=color:#999999;";
+                    }
+                    usageTableRow += '><td>' + capitalise(details.key) ;
+                    if (details.key.indexOf("test") >=0){
+                        usageTableRow += "<br/><span style='font-size: 12px;'> *The testing statistics are not included in the total count of downloads.</span>";
+                    }
+                    usageTableRow += '</td><td style="text-align: right;">' + addCommas(details.value.events) + ' events</td><td style="text-align: right">'  + addCommas(details.value.records)  + ' records </td></tr>';
+                    $usageTable.append($(usageTableRow));
                 });
                 $usageDiv.append($usageTable);
                 $('div#usage').append($usageDiv);
