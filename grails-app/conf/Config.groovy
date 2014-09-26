@@ -200,6 +200,9 @@ if(!eml.country){
 if(!eml.electronicMailAddress){
     eml.electronicMailAddress = "info@ala.org.au"
 }
+if(!googleAnalyticsID){
+    googleAnalyticsID = "UA-4355440-1"
+}
 
 /******* standard grails **********/
 grails.project.groupId = 'au.org.ala' // change this to alter the default package name and Maven publishing destination
