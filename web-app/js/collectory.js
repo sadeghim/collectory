@@ -1,4 +1,14 @@
 /************************************************************\
+ * i18n
+ \************************************************************/
+jQuery.i18n.properties({
+    name: 'messages',
+    path: COLLECTORY_CONF.contextPath + '/messages/i18n/',
+    mode: 'map',
+    language: COLLECTORY_CONF.locale // default is to use browser specified locale
+});
+
+/************************************************************\
 * Build phrase with num records and set to elements with id = numBiocacheRecords
 \************************************************************/
 function setNumbers(totalBiocacheRecords) {
@@ -17,12 +27,6 @@ function noData() {
     setNumbers(0);
     $('a.recordsLink').css('display','none');
     $('#recordsBreakdown').css('display','none');
-}
-/************************************************************\
- * Capitalise the first letter of a string
- \************************************************************/
-function capitaliseFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 /************************************************************\
@@ -86,7 +90,7 @@ function findPrevious(o, tag, limit){
 /************************************************************\
 *
 \************************************************************/
-  function anySelected(idOfSelect, message) {
+function anySelected(idOfSelect, message) {
     var selected = document.getElementById(idOfSelect).selectedIndex;
     if (selected == 0) {
       alert(message);
@@ -94,8 +98,7 @@ function findPrevious(o, tag, limit){
     } else {
       return true;
     }
-  }
-
+}
 /************************************************************\
 *
 \************************************************************/
@@ -112,8 +115,6 @@ function sendEmail(strEncoded) {
     }
     return false;
 }
-
-
 /************************************************************\
 *
 \************************************************************/
@@ -235,4 +236,3 @@ function loadDownloadStats(loggerServicesUrl, uid, name, eventType) {
         }
     });
 }
-

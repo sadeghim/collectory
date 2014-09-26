@@ -14,7 +14,8 @@
         <meta name="description" content="Explore ${orgNameLong}'s Natural History Collections."/>
    </g:else>
    <title><g:layoutTitle /></title>
-   <r:require modules="jquery, bootstrap, application, collectory" />
+   <g:render template="/layouts/global"/>
+   <r:require modules="jquery, jquery_i18n, bootstrap, application, collectory" />
    <style type="text/css">
         body {
             background-color: #ffffff !important;

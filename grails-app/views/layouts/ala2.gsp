@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
    <meta name="app.version" content="${g.meta(name:'app.version')}"/>
    <meta name="app.build" content="${g.meta(name:'app.build')}"/>
    <g:if test="${instance}">
@@ -11,7 +11,8 @@
         <meta name="description" content="Explore Australia's Natural History Collections."/>
    </g:else>
    <title><g:layoutTitle /></title>
-   <r:require modules="jquery, bootstrap, application, collectory" />
+   <g:render template="/layouts/global"/>
+   <r:require modules="jquery, jquery_i18n, bootstrap, application, collectory" />
    <r:script disposition='head'>
         // initialise plugins
         jQuery(function(){
@@ -87,7 +88,7 @@
         document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
     </script>
     <r:script>
-        var pageTracker = _gat._getTracker("UA-4355440-1");
+        var pageTracker = _gat._getTracker('${grailsApplication.config.googleAnalyticsID}');
         pageTracker._initData();
         pageTracker._trackPageview();
 

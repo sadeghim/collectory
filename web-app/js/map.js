@@ -2,6 +2,17 @@
  * Mapping - plot collection locations
  */
 
+/************************************************************\
+ * i18n
+ \************************************************************/
+jQuery.i18n.properties({
+    name: 'messages',
+    path: COLLECTORY_CONF.contextPath + '/messages/i18n/',
+    mode: 'map',
+    language: COLLECTORY_CONF.locale // default is to use browser specified locale
+});
+/************************************************************/
+
 /* some globals */
 // the map
 var map;
@@ -213,7 +224,7 @@ function dataRequestHandler(data) {
 
     // update display of number of features
     var selectedFilters = getSelectedFiltersAsString();
-    var selectedFrom = "collections in total";
+    var selectedFrom = jQuery.i18n.prop('map.js.collectionstotal');
     if (selectedFilters != 'all') {
         selectedFrom = selectedFilters + " collections";
     }
@@ -367,7 +378,6 @@ function hoverOn(evt) {
     // fit to content
     popup.updateSize();
 }
-
 
 /************************************************************\
 *   handle map movement (zoom pan)
