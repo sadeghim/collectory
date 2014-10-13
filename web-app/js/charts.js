@@ -36,14 +36,14 @@ var genericChartOptions = {
 // defaults for individual facet charts
 var individualChartOptions = {
     state_conservation: {chartType: 'column', width: 700, chartArea: {left:60, height: "58%"},
-        title: 'By state conservation status', hAxis: {slantedText: true}},
+        title: jQuery.i18n.prop('charts.js.stateconservation'), hAxis: {slantedText: true}},
     occurrence_year: {chartType: 'column', width: 700, chartArea: {left:60, height: "65%"},
         hAxis: {slantedText: true}},
-    species_group: {title: 'By higher-level group', ignore: ['Animals'], chartType: 'column',
+    species_group: {title: jQuery.i18n.prop('charts.js.higherlevelgroup'), ignore: ['Animals'], chartType: 'column',
         width: 700, chartArea: {left:60, height:"58%"}, vAxis: {minValue: 0},
         colors: ['#108628']},
     state: {ignore: ['Unknown1']},
-    type_status: {title: 'By type status (as % of all type specimens)', ignore: ['notatype']},
+    type_status: {title: jQuery.i18n.prop('charts.js.typestatus'), ignore: ['notatype']},
     assertions: {chartType: 'bar', width: 900, height:700, chartArea: {left:350, height:"80%", width:"100%"}}
 };
 
@@ -338,7 +338,7 @@ function drawTaxonomyChart(data, chartOptions, query) {
     // resolve the chart options
     var opts = $.extend({}, taxonomyPieChartOptions);
     opts = $.extend(true, opts, chartOptions);
-    opts.title = opts.name ? opts.name + " records by " + data.rank : "By " + data.rank;
+    opts.title = opts.name ? opts.name + " " + jQuery.i18n.prop('charts.js.recordsby') + " " + data.rank : "By " + data.rank;
 
     // create the outer div that will contain the chart and the additional links
     var $outerContainer = $('#taxa');
@@ -393,13 +393,13 @@ function drawTaxonomyChart(data, chartOptions, query) {
     }
     else {
         // show the instruction
-        $backLink.html("Click a slice to drill into the next taxonomic level.").removeClass('link');
+        $backLink.html(jQuery.i18n.prop('charts.js.slicetodrill')).removeClass('link');
     }
 
     // draw records link
     var $recordsLink = $('#recordsLink');
     if ($recordsLink.length == 0) {
-        $recordsLink = $('<div class="link under" id="recordsLink">View records</div>').appendTo($outerContainer);  // create it
+        $recordsLink = $('<div class="link under" id="recordsLink">' + jQuery.i18n.prop('charts.js.viewrecords') + '</div>').appendTo($outerContainer);  // create it
         $recordsLink.css('position','relative').css('top','-75px');
         $recordsLink.click(function() {
             // show occurrence records
@@ -412,10 +412,10 @@ function drawTaxonomyChart(data, chartOptions, query) {
     }
     // set link text
     if (chartOptions.history) {
-        $recordsLink.html('View records for ' + chartOptions.rank + ' ' + chartOptions.name);
+        $recordsLink.html(jQuery.i18n.prop('charts.js.viewrecordsfor') + ' ' + chartOptions.rank + ' ' + chartOptions.name);
     }
     else {
-        $recordsLink.html('View all records');
+        $recordsLink.html(jQuery.i18n.prop('charts.js.viewallrecords'));
     }
 
     // setup a click handler - if requested
@@ -555,8 +555,8 @@ function initTaxonTree(treeOptions) {
       },
       checkbox: {override_ui:true},
       contextmenu: {select_node: false, show_at_node: false, items: {
-          records: {label: "Show records", action: function(obj) {showRecords(obj, query);}},
-          bie: {label: "Show information", action: function(obj) {showBie(obj);}},
+          records: {label: jQuery.i18n.prop('charts.js.showrecords'), action: function(obj) {showRecords(obj, query);}},
+          bie: {label: jQuery.i18n.prop('charts.js.showinformation'), action: function(obj) {showBie(obj);}},
           create: false,
           rename: false,
           remove: false,

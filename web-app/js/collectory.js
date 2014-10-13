@@ -14,9 +14,12 @@ jQuery.i18n.properties({
 function setNumbers(totalBiocacheRecords) {
   var recordsClause = "";
   switch (totalBiocacheRecords) {
-    case 0: recordsClause = "No records"; break;
-    case 1: recordsClause = "1 record"; break;
-    default: recordsClause = addCommas(totalBiocacheRecords) + " records";
+    //case 0: recordsClause = "No records"; break;
+    //case 1: recordsClause = "1 record"; break;
+    //default: recordsClause = addCommas(totalBiocacheRecords) + " records";
+    case 0: recordsClause = jQuery.i18n.prop('collectory.js.norecord'); break;
+    case 1: recordsClause = "1 " + jQuery.i18n.prop('collectory.js.record'); break;
+    default: recordsClause = addCommas(totalBiocacheRecords) + " " + jQuery.i18n.prop('collectory.js.records');
   }
   $('#numBiocacheRecords').html(recordsClause);
 }
@@ -155,20 +158,20 @@ function initializeLocationMap(canBeMapped,lat,lng) {
 *
 \************************************************************/
 function contactCurator(email, firstName, uid, instUid, name) {
-    var subject = "Request to review web pages presenting information about the " + name + ".";
-    var content = "Dear " + firstName + ",\n\n";
-    content = content + "The web address for the Atlas of Living Australia is: http://www.ala.org.au.\n\n";
-    content = content + "However, you can find:\n\n";
-    content = content + "Your Collection page at: http://collections.ala.org.au/public/show/" + uid + ".\n\n";
+    var subject = jQuery.i18n.prop('collectory.js.contentline01') + " " + name + ".";
+    var content = jQuery.i18n.prop('collectory.js.contentline02') + " " + firstName + ",\n\n";
+    content = content + jQuery.i18n.prop('collectory.js.contentline03') + " http://www.ala.org.au.\n\n";
+    content = content + jQuery.i18n.prop('collectory.js.contentline04') + "\n\n";
+    content = content + jQuery.i18n.prop('collectory.js.contentline05') + " http://collections.ala.org.au/public/show/" + uid + ".\n\n";
     if (instUid != "") {
-        content = content + "Your Institution page at: http://collections.ala.org.au/public/showInstitution/" + instUid + ".\n\n";
+        content = content + jQuery.i18n.prop('collectory.js.contentline06') + " http://collections.ala.org.au/public/showInstitution/" + instUid + ".\n\n";
     }
-    content = content + "Or explore your collections community at: http://collections.ala.org.au/public/map.\n\n";
-    content = content + "After consulting the website, please respond to this email with any feedback and edits that you would like made to your Collections and Institution pages before Monday the 25th of October 2010.\n\n";
-    content = content + "Regards,\n";
-    content = content + "The Atlas of Living Australia\n\n";
-    content = content + "Data Manager| Atlas of Living Australia\n";
-    content = content + "CSIRO\n";
+    content = content + jQuery.i18n.prop('collectory.js.contentline07') + " http://collections.ala.org.au/public/map.\n\n";
+    content = content + jQuery.i18n.prop('collectory.js.contentline08') + "\n\n";
+    content = content + jQuery.i18n.prop('collectory.js.contentline09') + ",\n";
+    content = content + jQuery.i18n.prop('collectory.js.contentline10') + "\n\n";
+    content = content + jQuery.i18n.prop('collectory.js.contentline11') + "\n";
+    content = content + jQuery.i18n.prop('collectory.js.contentline12') + "\n";
 
     var objWin = window.open ('mailto:' + email + '?subject=' + subject + '&body=' + encodeURI(content));
     if (objWin) objWin.close();
@@ -192,13 +195,17 @@ function loadDownloadStats(loggerServicesUrl, uid, name, eventType) {
     }
 
     var displayNameMap = {
-        'thisMonth' : 'This month',
-        'last3Months' : 'Last 3 months',
-        'lastYear' : 'Last 12 months',
-        'all' : 'All downloads'
+        //'thisMonth' : 'This month',
+        //'last3Months' : 'Last 3 months',
+        //'lastYear' : 'Last 12 months',
+        //'all' : 'All downloads'
+        'thisMonth' : jQuery.i18n.prop('collectory.js.thismonth'),
+        'last3Months' : jQuery.i18n.prop('collectory.js.last3month'),
+        'lastYear' : jQuery.i18n.prop('collectory.js.last12month'),
+        'all' : jQuery.i18n.prop('collectory.js.alldownloads')
     };
 
-    $('div#usage').html("Loading statistics...");
+    $('div#usage').html(jQuery.i18n.prop('collectory.js.loadingstatistics'));
 
     var url = loggerServicesUrl + "/reasonBreakdown.json?eventId=" + eventType + "&entityUid=" + uid;
     $.ajax({
@@ -206,7 +213,7 @@ function loadDownloadStats(loggerServicesUrl, uid, name, eventType) {
         dataType: 'jsonp',
         cache: false,
         error: function (jqXHR, textStatus, errorThrown) {
-            $('div#usage').html("No usage statistics available.");
+            $('div#usage').html(jQuery.i18n.prop('collectory.js.nousagestatistics'));
         },
         success: function (data) {
             $('div#usage').html('');
@@ -215,7 +222,7 @@ function loadDownloadStats(loggerServicesUrl, uid, name, eventType) {
                 var $usageDiv = $('<div class="usageDiv well"/>');
                 var nonTestingRecords  = (value.reasonBreakdown["testing"] == undefined) ? value.records : value.records -  value.reasonBreakdown["testing"].records;
                 var nonTestingEvents   = (value.reasonBreakdown["testing"] == undefined) ? value.events  : value.events  -  value.reasonBreakdown["testing"].events;
-                $usageDiv.html('<h4><span>' + displayString + "</span><span class='pull-right'>" + addCommas(nonTestingRecords) + " records downloaded from " +  addCommas(nonTestingEvents) + " downloads. </span></h4>");
+                $usageDiv.html('<h4><span>' + displayString + "</span><span class='pull-right'>" + addCommas(nonTestingRecords) + " " + jQuery.i18n.prop('collectory.js.recordsdownloaded') + " " +  addCommas(nonTestingEvents) + " downloads. </span></h4>");
                 var $usageTable = $('<table class="table"/>');
                 reasons = sortKV(value['reasonBreakdown']);
                 $.each(reasons, function( index, details ) {
@@ -225,7 +232,7 @@ function loadDownloadStats(loggerServicesUrl, uid, name, eventType) {
                     }
                     usageTableRow += '><td>' + capitalise(details.key) ;
                     if (details.key.indexOf("test") >=0){
-                        usageTableRow += "<br/><span style='font-size: 12px;'> *The testing statistics are not included in the total count of downloads.</span>";
+                        usageTableRow += "<br/><span style='font-size: 12px;'> *" + jQuery.i18n.prop('collectory.js.testingstatistics') + "</span>";
                     }
                     usageTableRow += '</td><td style="text-align: right;">' + addCommas(details.value.events) + ' events</td><td style="text-align: right">'  + addCommas(details.value.records)  + ' records </td></tr>';
                     $usageTable.append($(usageTableRow));

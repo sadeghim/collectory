@@ -34,7 +34,7 @@ var validator = {
         checkLength: function (o, n, min, max) {
             if (o.val().length > max || o.val().length < min) {
                 o.addClass("ui-state-error");
-                this.updateTips("Length of " + n + " must be between " + min + " and " + max + ".");
+                this.updateTips(jQuery.i18n.prop('change.js.lengthof') + " " + n + " " + jQuery.i18n.prop('change.js.mustbebetween') + " " + min + " and " + max + ".");
                 return false;
             } else {
                 return true;
@@ -59,7 +59,7 @@ var validator = {
                 success: function(data) {
                     if (data.found == 'true') {
                         o.addClass("ui-state-error");
-                        this.updateTips("A collection with this name already exists (" + data.uid + ")");
+                        this.updateTips(jQuery.i18n.prop('change.js.collectionwithname') + " (" + data.uid + ")");
                         isUnique = false;
                     }
                 }
@@ -77,13 +77,13 @@ var validator = {
         temporalSpan: function (start, end) {
             var text;
             if (start && end) {
-                text = "The collection was established in " + start + " and ceased acquisitions in " + end + "."
+                text = jQuery.i18n.prop('change.js.transformer01') + " " + start + " " + jQuery.i18n.prop('change.js.transformer02') + " " + end + "."
             } else if (start) {
-                text = "The collection was established in " + start + " and continues to the present."
+                text = jQuery.i18n.prop('change.js.transformer03') + " " + start + " " + jQuery.i18n.prop('change.js.transformer04')
             } else if (end) {
-                text = "The collection ceased acquisitions in " + end + "."
+                text = jQuery.i18n.prop('change.js.transformer05') + " " + end + "."
             } else {
-                text = "[No start or end date specified for this collection.]"
+                text = jQuery.i18n.prop('change.js.transformer06')
             }
             return text;
         },
@@ -118,10 +118,10 @@ var validator = {
         },
         states: function (str) {
             if (str === "") { return ""; }
-            if ($.inArray(str.toLowerCase(), ["all", "all states", "australian states"]) > -1) {
-                return "All Australian states are covered.";
+            if ($.inArray(str.toLowerCase(), [jQuery.i18n.prop('change.js.transformer07'), jQuery.i18n.prop('change.js.transformer08'), jQuery.i18n.prop('change.js.transformer09')]) > -1) {
+                return jQuery.i18n.prop('change.js.transformer10');
             } else {
-                return "Australian states covered include: " + str + ".";
+                return jQuery.i18n.prop('change.js.transformer11') + " " + str + ".";
             }
         }
     },
@@ -178,7 +178,7 @@ var validator = {
     dialogs = {
         name: {
             width: 500,
-            title: 'Change the name of the collection',
+            title: jQuery.i18n.prop('change.js.dialogs01'),
             ok: function() {
                 var bValid = true,
                     $input = $('#nameInput'),
@@ -189,7 +189,7 @@ var validator = {
                 bValid = bValid && validator.checkLength( $input, "name", 3, 1024 );
 
                 bValid = bValid && validator.checkRegexp( $input, /^[a-z]([0-9a-z_ ])+$/i,
-                        "Name may consist of a-z, 0-9, underscores, begin with a letter." );
+                    jQuery.i18n.prop('change.js.dialogs02'));
 
                 //bValid = bValid && validator.checkUnique($nameInput);
 
@@ -200,7 +200,7 @@ var validator = {
             }},
         acronym: {
             width: 400,
-            title: 'Change the acronym for the collection',
+            title: jQuery.i18n.prop('change.js.acronym01'),
             ok: function() {
                 var bValid = true,
                     $input = $('#acronymInput');
@@ -210,7 +210,7 @@ var validator = {
                 bValid = bValid && validator.checkLength( $input, "acronym", 3, 45 );
 
                 bValid = bValid && validator.checkRegexp( $input, /^[a-z]([0-9a-z_ ])+$/i,
-                        "Acronym may consist of a-z, 0-9, underscores, begin with a letter.");
+                    jQuery.i18n.prop('change.js.acronym02'));
 
                 if ( bValid ) {
                     dialogs.checkAndUpdateText('acronym');
@@ -221,7 +221,7 @@ var validator = {
         lsid: {
             pageStore: {selector: "#lsid", key: 'lsid'},
             width: 400,
-            title: 'Enter a valid LSID for the collection if one exists',
+            title: jQuery.i18n.prop('change.js.lsid01'),
             ok: function() {
                 var bValid = true,
                     $input = $('#lsidInput'),
@@ -232,7 +232,7 @@ var validator = {
                 bValid = bValid && validator.checkLength( $input, "lsid", 0, 45 );
 
                 bValid = bValid && validator.checkRegexp( $input, /urn:lsid:([\w\-\.]+\.[\w\-\.]+)+:\w+:\S+/i,
-                        "A valid LSID has the form - URN:LSID:<Authority>:<Namespace>:<ObjectID>[:<Version>]");
+                    jQuery.i18n.prop('change.js.lsid02') + " - URN:LSID:<Authority>:<Namespace>:<ObjectID>[:<Version>]");
 
                 if ( bValid ) {
                     var val = $input.val();
@@ -247,7 +247,7 @@ var validator = {
         },
         description: {
             width: 700,
-            title: 'Edit the description of the collection',
+            title: jQuery.i18n.prop('change.js.description01'),
             ok: function () {
                 // update page
                 var newContent = $('#descriptionInput').tinymce().getContent();
@@ -261,7 +261,7 @@ var validator = {
         },
         temporalSpan: {
             width: 400,
-            title: 'Edit the start and end dates of the collection',
+            title: jQuery.i18n.prop('change.js.temporalspan01'),
             ok: function () {
                 var bValid = true,
                     sDate = $('#startDateInput'),
@@ -274,10 +274,10 @@ var validator = {
                 eDate.removeClass( "ui-state-error" );
 
                 if (sDateVal !== "") {
-                    bValid = validator.checkDate(sDate, "Bad start date");
+                    bValid = validator.checkDate(sDate, jQuery.i18n.prop('change.js.temporalspan02'));
                 }
                 if (eDateVal !== "") {
-                    bValid = bValid && validator.checkDate(eDate, "Bad end date");
+                    bValid = bValid && validator.checkDate(eDate, jQuery.i18n.prop('change.js.temporalspan03'));
                 }
 
                 if (bValid) {
@@ -295,7 +295,7 @@ var validator = {
             }
         },
         taxonomicRange: {
-            title: "Edit the taxonomic range of the collection",
+            title: jQuery.i18n.prop('change.js.taxonomicrange01'),
             width: 700,
             ok: function () {
                 var $kingdomCoverageElement = $('#kingdomCoverage'),
@@ -307,7 +307,7 @@ var validator = {
                 dialogs.checkAndUpdateText('focus');
 
                 if (kingdomCoverageVal !== currentValue.kingdomCoverage) {
-                    $kingdomCoverageElement.html("Kingdoms covered include: " + transformer.listToString(selectedKingdoms));
+                    $kingdomCoverageElement.html(jQuery.i18n.prop('change.js.taxonomicrange02') + " " + transformer.listToString(selectedKingdoms));
                     $kingdomCoverageElement.toggleClass('empty', kingdomCoverageVal === "");
                     currentValue.kingdomCoverage = kingdomCoverageVal;
                     pageButtons.changed('kingdomCoverage');
@@ -324,7 +324,7 @@ var validator = {
             }
         },
         geographicRange: {
-            title: "Edit the geographic range of the collection",
+            title: jQuery.i18n.prop('change.js.geographicrange01'),
             width: 700,
             ok: function () {
                 dialogs.checkAndUpdateText("geographicDescription");
@@ -408,10 +408,10 @@ $(function() {
         var $changes = $('#changes');
         if ($('#changes:visible').length > 0) {
             $changes.slideUp();
-            $showChangesLink.html("Show recent changes");
+            $showChangesLink.html(jQuery.i18n.prop('change.js.showchangeslink01'));
         } else {
             $changes.slideDown();
-            $showChangesLink.html("Hide recent changes");
+            $showChangesLink.html(jQuery.i18n.prop('change.js.showchangeslink02'));
         }
     });
 
