@@ -188,6 +188,7 @@ class DarwinCoreFields {
             new DarwinCoreField(name: 'verbatimTaxonRank'),
             new DarwinCoreField(name: 'vernacularName'),
             new DarwinCoreField(name: 'waterBody'),
+            new DarwinCoreField(name: 'userId'),
             new DarwinCoreField(name: 'year')
     ]
 
@@ -198,7 +199,6 @@ class DarwinCoreFields {
     static List getLessImportant() {
         return fields.findAll {!it.important}
     }
-
 }
 
 class DarwinCoreField {
