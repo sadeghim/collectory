@@ -100,8 +100,8 @@ function appendResource(value) {
     var $rowC = $('<div class="rowC" style="display:none;">').appendTo($div);  // starts hidden
 
     // row A
-    $rowA.append('<img title="Click to show more information" src="' + baseUrl + '/images/skin/ExpandArrow.png"/>');  // twisty
-    $rowA.append('<span class="result-name"><a title="Show all metadata for this data set" href="' + baseUrl + '/public/showDataResource/' + value.uid + '">' + value.name + '</a></span>'); // name
+    $rowA.append('<img title="'+ jQuery.i18n.prop('datasets.js.appendresource01') + '" src="' + baseUrl + '/images/skin/ExpandArrow.png"/>');  // twisty
+    $rowA.append('<span class="result-name"><a title="' + jQuery.i18n.prop('datasets.js.appendresource02') + '" href="' + baseUrl + '/public/showDataResource/' + value.uid + '">' + value.name + '</a></span>'); // name
     $rowA.find('a').tooltip(tooltipOptions);
     $rowA.find('img').tooltip($.extend({},tooltipOptions,{position:'center left'}));
 
@@ -110,10 +110,10 @@ function appendResource(value) {
     $rowB.append('<span><strong class="resultsLabel">License: </strong>' + (value.licenseType == null ? '' : value.licenseType) + '</span>'); // license type
     $rowB.append('<span><strong class="resultsLabel">License version: </strong>' + (value.licenseVersion == null ? '' : value.licenseVersion) + '</span>'); // license version
     if (value.resourceType == 'records') {
-        $rowB.append('<span class="viewRecords"><a title="View occurrence records for this data set" href="' + biocacheUrl + '/occurrences/search?q=data_resource_uid:' + value.uid + '">View records</a></span>'); // records link
+        $rowB.append('<span class="viewRecords"><a title="' + jQuery.i18n.prop('datasets.js.appendresource03') + '" href="' + biocacheUrl + '/occurrences/search?q=data_resource_uid:' + value.uid + '">View records</a></span>'); // records link
     }
     if (value.resourceType == 'website' && value.websiteUrl) {
-        $rowB.append('<span class="viewWebsite"><a title="Open the website in another tab" class="external" target="_blank" href="' + value.websiteUrl + '">Website</a></span>'); // website link
+        $rowB.append('<span class="viewWebsite"><a title="' + jQuery.i18n.prop('datasets.js.appendresource04') + '" class="external" target="_blank" href="' + value.websiteUrl + '">Website</a></span>'); // website link
     }
     $rowB.find('a').tooltip(tooltipOptions);
 
@@ -139,7 +139,7 @@ function appendResource(value) {
     }  // content types
 
     if ($rowC.children().length == 0) {
-        $rowC.append("No further information available.");
+        $rowC.append(jQuery.i18n.prop('datasets.js.appendresource05'));
     }
 }
 
@@ -177,7 +177,7 @@ function clearList() {
 function updateTotal() {
     total = resources.length;
     $('#resultsReturned').html("Showing <strong>" + total + "</strong> data " + (total == 1 ? 'set.' : 'sets.'));
-    $('#downloadLink').attr('title', 'Download metadata for ' + total + ' datasets as a CSV file');
+    $('#downloadLink').attr('title', jQuery.i18n.prop('datasets.js.updatetotal01') + ' ' + total + ' ' + jQuery.i18n.prop('datasets.js.updatetotal02'));
 }
 function hideTooltip(element) {
     if (element == undefined) return;
@@ -443,32 +443,32 @@ function comparator(a, b) {
 // the default if not in this list is to capitalise the record value
 // also holds display text for the facet categories
 var displayText = {
-    ccby:"CC BY", ccbync:"CC BY-NC", ccbysa:"CC BY-SA", ccbyncsa:"CC BY-NC-SA", other:"Custom license",
-    noLicense:"No license information", noValue:"No information", '3.0':"CC 3.0", '2.5':"CC 2.5",
-    dataAvailable:"Data available",linksAvailable:"Links available",inProgress:"In progress"
+    ccby:jQuery.i18n.prop('datasets.js.displaytext01'), ccbync:jQuery.i18n.prop('datasets.js.displaytext02'), ccbysa:jQuery.i18n.prop('datasets.js.displaytext03'), ccbyncsa:jQuery.i18n.prop('datasets.js.displaytext04'), other:jQuery.i18n.prop('datasets.js.displaytext05'),
+    noLicense:jQuery.i18n.prop('datasets.js.displaytext06'), noValue:jQuery.i18n.prop('datasets.js.displaytext07'), '3.0':jQuery.i18n.prop('datasets.js.displaytext08'), '2.5':jQuery.i18n.prop('datasets.js.displaytext09'),
+    dataAvailable:jQuery.i18n.prop('datasets.js.displaytext10'),linksAvailable:jQuery.i18n.prop('datasets.js.displaytext11'),inProgress:jQuery.i18n.prop('datasets.js.displaytext12')
 };
 
 var helpText = {
-    records:"Contributes occurrence records to the Atlas",website:"Describes a website resource",
-    document:"Contributes the contents of a document",uploads:"The data has been uploaded directly to the Atlas",
-    'CC BY':"Creative Commons Attribution", 'CC BY-NC':"Creative Commons Attribution-NonCommercial",
-    'CC BY-SA':"Creative Commons Attribution-ShareAlike", 'CC BY-NC-SA':"Creative Commons Attribution-NonCommercial-ShareAlike",
-    other:"Uses a custom rights statement",noLicense:"No license information is available", noValue:"No information is available",
-    '3.0':"Creative Commons version 3.0", '2.5':"Creative Commons version 2.5",
-    dataAvailable:"Data is directly accessible in the Atlas",linksAvailable:"Provides links to content on other sites",
-    inProgress:"Negotiation for integration into the Atlas is in progress",declined:"The resource has declined to contribute to the Atlas",
-    identified:"Has been identifed but not yet approached for contribution to the Atlas"
+    records:jQuery.i18n.prop('datasets.js.helptext01'),website:jQuery.i18n.prop('datasets.js.helptext02'),
+    document:jQuery.i18n.prop('datasets.js.helptext03'),uploads:jQuery.i18n.prop('datasets.js.helptext04'),
+    'CC BY':jQuery.i18n.prop('datasets.js.helptext05'), 'CC BY-NC':jQuery.i18n.prop('datasets.js.helptext06'),
+    'CC BY-SA':jQuery.i18n.prop('datasets.js.helptext07'), 'CC BY-NC-SA':jQuery.i18n.prop('datasets.js.helptext08'),
+    other:jQuery.i18n.prop('datasets.js.helptext09'),noLicense:jQuery.i18n.prop('datasets.js.helptext10'), noValue:jQuery.i18n.prop('datasets.js.helptext11'),
+    '3.0':jQuery.i18n.prop('datasets.js.helptext12'), '2.5':jQuery.i18n.prop('datasets.js.helptext13'),
+    dataAvailable:jQuery.i18n.prop('datasets.js.helptext14'),linksAvailable:jQuery.i18n.prop('datasets.js.helptext15'),
+    inProgress:jQuery.i18n.prop('datasets.js.helptext16'),declined:jQuery.i18n.prop('datasets.js.helptext17'),
+    identified:jQuery.i18n.prop('datasets.js.helptext18')
 };
 
 /* Map of dataset attributes to treat as facets */
 var facets = {
-    resourceType:{name:"resourceType",display:"Resource type"},
-    licenseType:{name:"licenseType",display:"License type"},
-    licenseVersion:{name:"licenseVersion",display:"License version"},
-    status:{name:"status",display:"Integration status",help:"Progress of integration of the data into the Atlas"},
-    contentTypes:{name:"contentTypes", action:"has",display:"Content type",help:"The types of information available in the data set. A set may have many types of content."},
-    contains:{name:"contains", action:"containedIn", display:"Contains"},
-    institution:{name:"institution", display:"Institution",help:"The organisation or institution that is the source or custodian of the data set"}};
+    resourceType:{name:"resourceType",display:jQuery.i18n.prop('datasets.js.facets01')},
+    licenseType:{name:"licenseType",display:jQuery.i18n.prop('datasets.js.facets02')},
+    licenseVersion:{name:"licenseVersion",display:jQuery.i18n.prop('datasets.js.facets03')},
+    status:{name:"status",display:jQuery.i18n.prop('datasets.js.facets04'),help:jQuery.i18n.prop('datasets.js.facets05')},
+    contentTypes:{name:"contentTypes", action:"has",display:jQuery.i18n.prop('datasets.js.facets06'),help:jQuery.i18n.prop('datasets.js.facets07')},
+    contains:{name:"contains", action:"containedIn", display:jQuery.i18n.prop('datasets.js.facets08')},
+    institution:{name:"institution", display:jQuery.i18n.prop('datasets.js.facets09'),help:jQuery.i18n.prop('datasets.js.facets10')}};
 
 /** calculate facet totals and display them **/
 function calculateFacets() {

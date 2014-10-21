@@ -5,12 +5,12 @@
 /************************************************************\
  * i18n
  \************************************************************/
-jQuery.i18n.properties({
-    name: 'messages',
-    path: COLLECTORY_CONF.contextPath + '/messages/i18n/',
-    mode: 'map',
-    language: COLLECTORY_CONF.locale // default is to use browser specified locale
-});
+//jQuery.i18n.properties({
+//    name: 'messages',
+//    path: COLLECTORY_CONF.contextPath + '/messages/i18n/',
+//    mode: 'map',
+//    language: COLLECTORY_CONF.locale // default is to use browser specified locale
+//});
 /************************************************************/
 
 /* some globals */
@@ -217,8 +217,10 @@ function dataRequestHandler(data) {
     var unMappedText = "";
     switch (unMappable.length) {
         case 0: unMappedText = ""; break;
-        case 1: unMappedText = "1 collection cannot be mapped."; break;
-        default: unMappedText = unMappable.length + " collections cannot be mapped."; break;
+        //case 1: unMappedText = "1 collection cannot be mapped."; break;
+        //default: unMappedText = unMappable.length + " collections cannot be mapped."; break;
+        case 1: unMappedText = "1 " + jQuery.i18n.prop('map.js.collectioncannotbemapped'); break;
+        default: unMappedText = unMappable.length + " " + jQuery.i18n.prop('map.js.collectionscannotbemapped'); break;
     }
     $('span#numUnMappable').html(unMappedText);
 
@@ -229,9 +231,14 @@ function dataRequestHandler(data) {
         selectedFrom = selectedFilters + " collections";
     }
     var innerFeatures = "";
+
+    //console.log('Console: ' + jQuery.i18n.prop('map.js.nocollectionsareselected'));
+
     switch (features.length) {
-        case 0: innerFeatures = "No collections are selected."; break;
-        case 1: innerFeatures = "One collection is selected."; break;
+        //case 0: innerFeatures = "No collections are selected."; break;
+        //case 1: innerFeatures = "One collection is selected."; break;
+        case 0: innerFeatures = jQuery.i18n.prop('map.js.nocollectionsareselected'); break;
+        case 1: innerFeatures = jQuery.i18n.prop('map.js.onecollectionisselected'); break;
         default: innerFeatures = features.length + " "+ selectedFrom + "."; break;
     }
     $('span#numFeatures').html(innerFeatures);
@@ -289,9 +296,12 @@ function updateList(features) {
     // update display of number of features
     var innerFeatures = "";
     switch (features.length) {
-        case 0: innerFeatures = "No collections are selected"; break;
-        case 1: innerFeatures = features.length + " collection is listed"; break;
-        default: innerFeatures = features.length + " collections are listed alphabetically"; break;
+        //case 0: innerFeatures = "No collections are selected"; break;
+        //case 1: innerFeatures = features.length + " collection is listed"; break;
+        //default: innerFeatures = features.length + " collections are listed alphabetically"; break;
+        case 0: innerFeatures = jQuery.i18n.prop('map.js.nocollectionsareselected'); break;
+        case 1: innerFeatures = features.length + " " + jQuery.i18n.prop('map.js.collectionislisted'); break;
+        default: innerFeatures = features.length + " " + jQuery.i18n.prop('map.js.collectionsarelistedalphabetically'); break;
     }
     $('span#numFilteredCollections').html(innerFeatures);
 
@@ -406,20 +416,25 @@ function moved(evt) {
     var innerFeatures = "";
     switch (visibleCount) {
         case 0:
-            innerFeatures = "No collections are currently visible on the map.";
+            //innerFeatures = "No collections are currently visible on the map.";
+            innerFeatures = jQuery.i18n.prop('map.js.nocollectionsarecurrentlyvisible');
             break;
         case 1:
             if (totalCount == 1) {
-                innerFeatures = "It is currently visible on the map.";
+                //innerFeatures = "It is currently visible on the map.";
+                innerFeatures = jQuery.i18n.prop('map.js.itiscurrentlyvisible');
             } else {
-                innerFeatures = visibleCount + " collection is currently visible on the map.";
+                //innerFeatures = visibleCount + " collection is currently visible on the map.";
+                innerFeatures = visibleCount + " " + jQuery.i18n.prop('map.js.collectioniscurrentlyvisible');
             }
             break;
         default:
             if (visibleCount == totalCount) {
-                innerFeatures = "All are currently visible on the map.";
+                //innerFeatures = "All are currently visible on the map.";
+                innerFeatures = jQuery.i18n.prop('map.js.allarecurrentlyvisible');
             } else {
-                innerFeatures = visibleCount + " collections are currently visible on the map.";
+                //innerFeatures = visibleCount + " collections are currently visible on the map.";
+                innerFeatures = visibleCount + " " + jQuery.i18n.prop('map.js.collectionarecurrentlyvisible');
             }
             break;
     }
