@@ -2,8 +2,9 @@ grails.servlet.version = "2.5"
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir	= "target/test-reports"
-grails.project.target.level = 1.7
-grails.project.source.level = 1.7
+grails.project.target.level = 1.6
+grails.project.source.level = 1.6
+
 
 grails.project.fork = [
         // configure settings for compilation JVM, note that if you alter the Groovy version forked compilation is required
@@ -43,22 +44,19 @@ grails.project.dependency.resolution = {
 	    runtime 'ant:ant:1.6.5'
         runtime 'commons-httpclient:commons-httpclient:3.1'
         runtime 'org.aspectj:aspectjweaver:1.6.6'
-        runtime "net.sf.supercsv:super-csv:2.1.0"
     }
 
     plugins {
-        compile ':cache:1.1.2'
+        runtime ":cache:1.1.2"
         runtime ":hibernate:3.6.10.11"
         runtime ":jquery:1.8.3"
         runtime ":resources:1.2.7"
-        runtime ":release:3.0.1"
+        //runtime ":release:3.0.1"
         build ":tomcat:7.0.52.1"
         runtime ":audit-logging:0.5.5.3"
         runtime ":cache-headers:1.1.6"
         runtime ":richui:0.8"
         runtime ":tiny-mce:3.4.4"
         runtime ":ala-web-theme:0.2.4"
-        runtime ":cors:1.1.6"
-        runtime ":cached-resources:1.1"
     }
 }
