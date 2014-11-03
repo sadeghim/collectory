@@ -1,17 +1,18 @@
 package au.org.ala.collectory
 
+import au.com.bytecode.opencsv.CSVReader
+import au.org.ala.collectory.resources.PP
+import grails.converters.JSON
 import groovy.json.JsonSlurper
 import groovy.xml.MarkupBuilder
-
-import java.text.NumberFormat
-import java.text.DecimalFormat
-import org.codehaus.groovy.grails.web.util.StreamCharBuffer
-import grails.converters.JSON
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
 import org.codehaus.groovy.grails.web.converters.exceptions.ConverterException
 import org.codehaus.groovy.grails.web.json.JSONArray
+import org.codehaus.groovy.grails.web.util.StreamCharBuffer
+
+import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
-import au.org.ala.collectory.resources.PP
 
 class CollectoryTagLib {
 
@@ -1791,7 +1792,14 @@ class CollectoryTagLib {
 
                 if(pp.paramName == "url"){
                     if(value){
-                        out << "<tr><td id='dataURL'>Data URL</td><td><a href=\"" + metadataService.convertPath(value)  + "\"> " + metadataService.convertPath(value) + "</a></td></tr>"
+                        out << "<tr><td id='dataURL'>Data URLs</td><td>"
+                        def rdr = new CSVReader(new StringReader(value))
+                        def dataUrls = rdr.readNext()
+                        dataUrls.each { dataUrl ->
+                            out << "<a href=\"" + metadataService.convertPath(dataUrl)  + "\"> " + metadataService.convertPath(dataUrl) + "</a><br/>"
+                        }
+
+                        out << "</td></tr>"
                     } else {
                         out << "<tr><td id='dataURL'>Data URL</td><td>"+ g.message([code:'no.dataurl.supplied', default:'No data URL supplied'], null) + "</td></tr>"
                     }
