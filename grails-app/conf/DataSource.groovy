@@ -3,8 +3,8 @@ import org.codehaus.groovy.grails.commons.ConfigurationHolder
 dataSource {
 	pooled = true
     driverClassName = "com.mysql.jdbc.Driver"
-    username = "alin"
-    password = "alan32"
+    username = "root"
+    password = "password"
     logSql = false
 }
 hibernate {
@@ -19,8 +19,8 @@ environments {
             dialect = org.hibernate.dialect.MySQL5InnoDBDialect
             dbCreate = "update" // one of 'create', 'create-drop','update'
             url = "jdbc:mysql://localhost:3306/collectory?autoReconnect=true&connectTimeout=0"
-            username = "alin"
-            password = "alan32"
+            username = "root"
+            password = "password"
             //logSql = true
     }
 	}
