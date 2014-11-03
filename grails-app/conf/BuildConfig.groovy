@@ -47,6 +47,7 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
+        compile ':cache:1.1.2'
         runtime ":hibernate:3.6.10.11"
         runtime ":jquery:1.8.3"
         runtime ":resources:1.2.7"
@@ -58,5 +59,6 @@ grails.project.dependency.resolution = {
         runtime ":tiny-mce:3.4.4"
         runtime ":ala-web-theme:0.2.4"
         runtime ":cors:1.1.6"
+        runtime ":cached-resources:1.1"
     }
 }
