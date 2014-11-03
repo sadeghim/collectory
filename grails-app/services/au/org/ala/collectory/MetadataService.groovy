@@ -54,9 +54,13 @@ class MetadataService {
     }
 
     def convertPath(obj){
-        def oldPath = "file:///" + grailsApplication.config.uploadFilePath
-        def newPath = grailsApplication.config.grails.serverURL + grailsApplication.config.uploadExternalUrlPath
-        obj.replaceAll(oldPath,newPath)
+        if(obj){
+            def oldPath = "file:///" + grailsApplication.config.uploadFilePath
+            def newPath = grailsApplication.config.grails.serverURL + grailsApplication.config.uploadExternalUrlPath
+            obj.replaceAll(oldPath, newPath)
+        } else {
+            obj
+        }
     }
 
     def getConnectionProfiles() {
