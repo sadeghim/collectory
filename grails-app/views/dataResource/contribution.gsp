@@ -11,7 +11,7 @@
         <div class="nav">
             <h1><g:message code="collection.title.editing" />: ${command.name}</h1>
         </div>
-        <div id="baseForm" class="body">
+        <div id="baseForm" class="row-fluid">
             <g:if test="${message}">
             <div class="message">${message}</div>
             </g:if>
@@ -24,8 +24,8 @@
                 <g:hiddenField name="id" value="${command?.id}" />
                 <g:hiddenField name="uid" value="${command?.uid}" />
                 <g:hiddenField name="version" value="${command.version}" />
-                <div class="span12">
-                    <table>
+                %{--<div class="span12">--}%
+                    <table  style="margin-left:0; padding-left:0;">
                         <tbody>
 
                         <!-- status -->
@@ -99,7 +99,7 @@
                               <label for="mobilisationNotes"><g:message code="dataResource.mobilisationNotes.label" default="Mobilisation notes" /></label>
                             </td>
                             <td valign="top" class="value ${hasErrors(bean: command, field: 'harvestingNotes', 'errors')}">
-                                <g:textArea name="mobilisationNotes" cols="40" rows="${cl.textAreaHeight(text:command.mobilisationNotes)}" value="${command?.mobilisationNotes}" />
+                                <g:textArea name="mobilisationNotes" class="input-xxlarge" rows="${cl.textAreaHeight(text:command.mobilisationNotes)}" value="${command?.mobilisationNotes}" />
                                 <p><g:message code="dataresource.contribution.des01" />.</p>
                                 <cl:helpText code="dataResource.mobilisationNotes"/>
                               </td>
@@ -112,7 +112,7 @@
                               <label for="harvestingNotes"><g:message code="dataResource.harvestingNotes.label" default="Harvesting notes" /></label>
                             </td>
                             <td valign="top" class="value ${hasErrors(bean: command, field: 'harvestingNotes', 'errors')}">
-                                <g:textArea name="harvestingNotes" cols="40" rows="${cl.textAreaHeight(text:command.harvestingNotes)}" value="${command?.harvestingNotes}" />
+                                <g:textArea name="harvestingNotes" class="input-xxlarge" rows="${cl.textAreaHeight(text:command.harvestingNotes)}" value="${command?.harvestingNotes}" />
                                 <cl:helpText code="dataResource.harvestingNotes"/>
                               </td>
                               <cl:helpTD/>
@@ -148,11 +148,11 @@
                                     <td valign="top" class="value">
                                         <g:if test="${dwcf.values}">
                                             <!-- pick list -->
-                                            <g:select name="${dwcf.name}" from="${dwcf.values}" value="${dwc[dwcf.name]}"/>
+                                            <g:select name="${dwcf.name}" class="input-xxlarge" from="${dwcf.values}" value="${dwc[dwcf.name]}"/>
                                         </g:if>
                                         <g:else>
                                             <!-- text field -->
-                                            <g:textField name="${dwcf.name}" value="${dwc[dwcf.name]}"/>
+                                            <g:textField name="${dwcf.name}" class="input-xxlarge" value="${dwc[dwcf.name]}"/>
                                         </g:else>
                                         <cl:helpText code="dataResource.${dwcf.name}"/>
                                     </td>
@@ -189,7 +189,7 @@
                         
                       </tbody>
                     </table>
-                </div>
+                %{--</div>--}%
 
                 <div class="buttons">
                     <span class="button"><input type="submit" name="_action_updateContribution" value="${message(code:"collection.button.update")}" class="save btn"></span>
@@ -266,7 +266,7 @@
 
             // create a delete element that removes the element before it and itself
             %{--var deleteImageUrl = "${resource(dir:'/images/ala',file:'delete.png')}";--}%
-            var $deleteLink = $('<span class="delete btn btn-danger"><i class="icon icon-remove icon-white"></i> Remove</span>')
+            var $deleteLink = $('<span class="delete btn btn-mini btn-danger"><i class="icon icon-remove icon-white"></i> </span>')
                     .click(function() {
                         $(this).prev().remove();
                         $(this).remove();
@@ -274,6 +274,7 @@
 
             // handle all urls (including hidden ones)
             var urlInputs = $('input[name="url"]');
+            $('input[name="url"]').addClass('input-xxlarge');
 
             $.each(urlInputs, function(i, obj) {
                 var urls = $(obj).val().split(',');
@@ -289,6 +290,7 @@
                             $(obj).clone()
                                 .val(url.trim())
                                 .css('width','93%')
+                                .addClass('input-xxlarge')
                                 .insertAfter($(obj).parent().children('input,span').last())
                                 .after($deleteLink.clone(true));
                         }
@@ -298,12 +300,12 @@
 
             /* this injects 'add another' functionality to urls */
             $.each(urlInputs, function(i, obj) {
-                $('<span class="clearfix link under btn">Add another</span>')
+                $('<span class="pull-right btn">Add another</span>')
                         .insertAfter($(obj).parent().children('input,span').last())
                         .click(function() {
                             // clone the original input
                             var $clone = $(obj).clone();
-                            $clone.val('').css('width','95%');
+                            $clone.val('');
                             $clone.insertBefore(this);
                             $clone.after($deleteLink.clone(true)); // add delete link
                         });

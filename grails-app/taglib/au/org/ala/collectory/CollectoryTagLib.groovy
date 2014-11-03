@@ -1791,7 +1791,7 @@ class CollectoryTagLib {
 
                 if(pp.paramName == "url"){
                     if(value){
-                        out << "<tr><td id='dataURL'>Data URL</dt><dd><a href=\"" + metadataService.convertPath(value)  + "\"> " + metadataService.convertPath(value) + "</a></td></tr>"
+                        out << "<tr><td id='dataURL'>Data URL</td><td><a href=\"" + metadataService.convertPath(value)  + "\"> " + metadataService.convertPath(value) + "</a></td></tr>"
                     } else {
                         out << "<tr><td id='dataURL'>Data URL</td><td>"+ g.message([code:'no.dataurl.supplied', default:'No data URL supplied'], null) + "</td></tr>"
                     }
@@ -1896,8 +1896,8 @@ class CollectoryTagLib {
                     // handle terms specially
                     out << """<tr class='labile' id="${it.name}" style="${hidden}">
                                   <td class='be-careful' colspan='2'>
-                                        <span class='label label-important'>Don't change the following terms unless you know what you are doing.
-                                        Incorrect values can cause major devastation.</span>
+                                        <div class='alert alert-danger'>Don't change the following terms unless you know what you are doing.
+                                        Incorrect values can cause major devastation.</div>
                                   </td>
                                </tr>
                         <tr class="prop labile" style="${hidden}" id="${it.name}">
