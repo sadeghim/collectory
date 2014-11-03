@@ -1762,7 +1762,7 @@ class CollectoryTagLib {
         if (attrs.connectionParameters?.toString()) {
 
             // create a table to display them
-            out << "<dl class='dl-horizontal'>"
+            out << "<table class='table'>"
 
             // parse the storage string
             def cp = JSON.parse(attrs.connectionParameters.toString())
@@ -1771,7 +1771,7 @@ class CollectoryTagLib {
             def profile = metadataService.getConnectionProfile(cp.protocol)
 
             // display the protocol
-            out << "<dt>Protocol:</dt><dd>${profile.display}</dd>"
+            out << "<tr><td>Protocol:</td><td>${profile.display}</td></tr>"
 
             // display each of the protocol's parameters
             profile.params.each {pp ->
@@ -1782,7 +1782,7 @@ class CollectoryTagLib {
                 }
                 else if (cp."${pp.paramName}" instanceof List) {
                     // show as list
-                    value = cp."${pp.paramName}".join('<br/>');
+                    value = cp."${pp.paramName}".join(',');
                 }
                 else {
                     // encode any control characters
@@ -1790,12 +1790,16 @@ class CollectoryTagLib {
                 }
 
                 if(pp.paramName == "url"){
-                    out << "<dt id=\"dataURL\">Data URL</dt><dd><a href=\"" + metadataService.convertPath(value)  + "\"> "+metadataService.convertPath(value) +"</a></dd>"
+                    if(value){
+                        out << "<tr><td id='dataURL'>Data URL</dt><dd><a href=\"" + metadataService.convertPath(value)  + "\"> " + metadataService.convertPath(value) + "</a></td></tr>"
+                    } else {
+                        out << "<tr><td id='dataURL'>Data URL</td><td>"+ g.message([code:'no.dataurl.supplied', default:'No data URL supplied'], null) + "</td></tr>"
+                    }
                 }
 
-                out << "<dt id=\"${pp.paramName}\">${pp.display}:</dt><dd>" + (value ?: 'Not supplied') + "</dd>"
+                out << "<tr><td id=\"${pp.paramName}\">${pp.display}:</td><td>" + (value ?: 'Not supplied') + "</td></tr>"
             }
-            out << "</dl>"
+            out << "</table>"
         }
         else {
             out << "none"
@@ -1884,7 +1888,7 @@ class CollectoryTagLib {
                     displayedValue = encodeControlChars(displayedValue)
                 }
 
-                def attributes = [name:pp.paramName, value:displayedValue]
+                def attributes = [name:pp.paramName, value:displayedValue, class:'input-xlarge']
                 if (!selected) {
                     attributes << [disabled:true]
                 }
