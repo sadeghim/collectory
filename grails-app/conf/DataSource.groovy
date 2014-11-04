@@ -3,8 +3,8 @@ import org.codehaus.groovy.grails.commons.ConfigurationHolder
 dataSource {
 	pooled = true
     driverClassName = "com.mysql.jdbc.Driver"
-    username = ""
-    password = ""
+    username = "root"
+    password = "password"
     logSql = false
 }
 hibernate {
