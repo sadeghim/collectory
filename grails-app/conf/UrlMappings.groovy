@@ -154,7 +154,7 @@ class UrlMappings {
       // high-performance name lookup from uid list
       "/ws/resolveNames/$uids" (controller: 'data', action: 'resolveNames')
 
-      "/lookup/summary/$uid(.$format)?" (controller:'lookup',action:'summary')
+      "/lookup/summary/$id(.$format)?" (controller:'lookup',action:'summary')
 
       "/ws/collection/contacts/$uid(.$format)?" (controller:'data',action:'contactsForCollections')
       "/ws/institution/contacts/$uid(.$format)?" (controller:'data',action:'contactsForInstitutions')

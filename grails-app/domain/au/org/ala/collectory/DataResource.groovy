@@ -1,7 +1,5 @@
 package au.org.ala.collectory
 
-import groovy.util.slurpersupport.GPathResult
-
 import java.sql.Timestamp
 
 class DataResource extends ProviderGroup implements Serializable {
