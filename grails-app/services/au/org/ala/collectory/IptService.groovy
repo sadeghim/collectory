@@ -19,6 +19,13 @@ import java.text.SimpleDateFormat
  * @see <a href="http://code.google.com/p/gbif-providertoolkit/">GBIF Provider Toolkit</a>
  */
 class IptService {
+
+    static transactional = true
+    def grailsApplication
+    def idGeneratorService
+    def authService
+    def dataLoaderService
+
     /** The standard IPT service namespace for XML documents */
     static final NAMESPACES = [
             ipt:"http://ipt.gbif.org/",
@@ -35,17 +42,6 @@ class IptService {
     static final RFC822_PARSER = new SimpleDateFormat('EEE, d MMM yyyy HH:mm:ss Z')
     /** Parse ISO 8601 date/times */
     //static final ISO8601_PARSER = new SimpleDateFormat('yyyy-MM-dd\'T\'HH:mm:ssXXX')
-
-    static final STATES_MAP = [
-            'ACT':'Australian Capital Territory',
-            'NSW':'New South Wales',
-            'QLD':'Queensland',
-            'NT':'Northern Territory',
-            'WA':'Western Australia',
-            'SA':'South Australia',
-            'TAS':'Tasmania',
-            'VIC':'Victoria'
-    ]
 
 
     /** Fields that we can derive from the RSS feed */
@@ -76,7 +72,8 @@ class IptService {
             state: { eml ->
                 def state = eml.dataset.contact?.address?.administrativeArea?.text()
 
-                state = STATES_MAP[state] ?: state
+                if (state)
+                    state = this.dataLoaderService.massageState(state)
                 ProviderGroup.statesList.contains(state) ? state : null
             },
             email: { eml ->  eml.dataset.contact?.electronicMailAddress?.text() },
@@ -89,11 +86,6 @@ class IptService {
     protected def collectParas(GPathResult paras) {
         paras?.list().inject(null, { acc, para -> acc == null ? para.text().trim() : acc + " " + para.text().trim() })
     }
-
-    static transactional = true
-    def grailsApplication
-    def idGeneratorService
-    def authService
 
     /**
      * See what needs updating for a data provider.
@@ -128,15 +120,7 @@ class IptService {
         for (update in updates) {
             DataResource old = current[update.websiteUrl]
 
-            if (old == null) {
-
-                if (create) {
-                    update.uid = idGeneratorService.getNextDataResourceId()
-                    update.save(flush: true)
-                    ActivityLog.log authService.username(), authService.isAdmin(), Action.CREATE, "Created new IPT data resource for provider " + provider.uid  + " with uid " + update.uid + " for dataset " + update.websiteUrl
-                }
-                merged << update
-            } else {
+            if (old)  {
                 if (!check || old.dataCurrency == null || update.dataCurrency == null || update.dataCurrency.after(old.dataCurrency)) {
                     for (name in allFields) {
                         def val = update.getProperty(name)
@@ -150,6 +134,13 @@ class IptService {
                     }
                     merged << old
                 }
+            } else {
+                if (create) {
+                    update.uid = idGeneratorService.getNextDataResourceId()
+                    update.save(flush: true)
+                    ActivityLog.log authService.username(), authService.isAdmin(), Action.CREATE, "Created new IPT data resource for provider " + provider.uid  + " with uid " + update.uid + " for dataset " + update.websiteUrl
+                }
+                merged << update
             }
         }
         return merged
