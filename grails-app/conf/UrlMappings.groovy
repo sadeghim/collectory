@@ -148,6 +148,9 @@ class UrlMappings {
       // preferred
       "/ws/eml/$id?" (controller:'data',action:'eml')
 
+      // GBIF IPT
+      "/ws/ipt/scan/$uid(.$format)?" (controller: 'ipt', action: 'scan')
+
       // high-performance name lookup from uid list
       "/ws/resolveNames/$uids" (controller: 'data', action: 'resolveNames')
 
