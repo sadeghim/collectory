@@ -4,6 +4,15 @@ The collectory manages metadata that describe Australia's biodiversity collectio
 
  * [Database schema (PDF)](https://github.com/AtlasOfLivingAustralia/collectory/blob/master/Collectory_schema_20140916.pdf?raw=true)
 
+## Release notes - version 1.1.2
+
+Bug fix that removes dependency on BIE
+Bug fix that removes hardcoded logger URLs
+
+## Release notes - version 1.1.1
+
+Bug fixes for collection/insitution pages
+
 ## Release notes - version 1.1
 
  * Translate all messages into Chinese in i18n for gsp files under the folder public
