@@ -4,14 +4,41 @@ The collectory manages metadata that describe Australia's biodiversity collectio
 
  * [Database schema (PDF)](https://github.com/AtlasOfLivingAustralia/collectory/blob/master/Collectory_schema_20140916.pdf?raw=true)
 
+## Release notes - version 1.1.3
+
+* fix for multiple urls
+* layout improvements
+* improved layout of connection params
+* Convert all unicodes to characters
+* Add messages I18N in javascript files
+* added a userId field
+* Add messages I18N in javascript files
+* charts cleanup
+* configurable google analytics
+* removed redundant bootstrap code
+* initial JS i18n integration
+* Usage stats are now an ordered list of breakdown by reasons in the following arrangement:
+* - This Month
+* - Last 3 Months
+* - Last 12 months
+* -All downloads
+* breakdowns for each period
+* Breakdown stats by reason added to the monthly and 3-month records
+* i18n for data access
+* Revert "Breakdown stats by reason added to the monthly and 3-month records"
+* enabling/disabling logging stats and download links
+* Logger integration including the ability to disable the loading of
+* statistics if they aren’t available
+* Breakdown stats by reason added to the monthly and 3-month records
+
 ## Release notes - version 1.1.2
 
-Bug fix that removes dependency on BIE
-Bug fix that removes hardcoded logger URLs
+ * Bug fix that removes dependency on BIE
+ * Bug fix that removes hardcoded logger URLs
 
 ## Release notes - version 1.1.1
 
-Bug fixes for collection/insitution pages
+ * Bug fixes for collection/insitution pages
 
 ## Release notes - version 1.1
 
