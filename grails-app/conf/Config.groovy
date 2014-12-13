@@ -277,7 +277,7 @@ auditLog.verbose = false
 /******************************************************************************\
  *  log4j configuration
 \******************************************************************************/
-logging.dir = (System.getProperty('catalina.base') ? System.getProperty('catalina.base') + '/logs'  : '/var/log/tomcat6')
+def logging_dir = (System.getProperty('catalina.base') ? System.getProperty('catalina.base') + '/logs'  : '/var/log/tomcat6')
 log4j = {
 
     appenders {
@@ -290,11 +290,11 @@ log4j = {
             production {
                 rollingFile name: "prodLog",
                         maxFileSize: 104857600,
-                        file: logging.dir + "/collectory.log",
+                        file: logging_dir+ "/collectory.log",
                         layout: pattern(conversionPattern: "%d %-5p [%c{1}]  %m%n")
                 rollingFile name: "stacktrace",
                         maxFileSize: 104857600,
-                        file: logging.dir + "/collectory-stacktrace.log"
+                        file: logging_dir + "/collectory-stacktrace.log"
             }
         }
     }
