@@ -13,12 +13,13 @@ class MessagesController {
      * @return
      */
     def i18n(String id) {
-        Locale locale = request.locale
+        Locale locale = org.springframework.web.servlet.support.RequestContextUtils.getLocale(request)
 
-        //println "i18n = ${id}"
+        //println "User locale: " + locale.toString()
+        //println "Browser locale: " + request.locale
 
-        if(id == 'messages.properties') {
-            //if (id && id.startsWith("messages_")) {
+        //if(id == 'messages.properties') {
+        if (id && !id.startsWith("messages_")) {
                 // Assume standard messageSource file name pattern:
                 // messages.properties, messages_en.properties, messages_en_US.properties
                 // String locale_suffix = id.replaceFirst(/messages_(.*)/,'$1')
