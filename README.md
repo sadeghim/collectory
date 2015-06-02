@@ -1,6 +1,6 @@
 # collectory   [![Build Status](https://travis-ci.org/AtlasOfLivingAustralia/collectory.svg?branch=master)](http://travis-ci.org/AtlasOfLivingAustralia/collectory) 
 
-## Warning: This project is deprecated now in favour of the [collectory-plugin](https://github.com/AtlasOfLivingAustralia/collectpry-plugin)
+## Warning: This project is deprecated now in favour of the [collectory-plugin](https://github.com/AtlasOfLivingAustralia/collectory-plugin)
 
 
 
